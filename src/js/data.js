@@ -240,8 +240,10 @@ const DB = {
     const users = await this.users.all();
     const adminUser = users.find(u => u.username === 'admin');
     if (adminUser) {
-      const adminHashed = await PASSWORD_UTILS.hash('admin123');
-      await this.users.update(adminUser.id, { password: adminHashed });
+      if (!PASSWORD_UTILS.isHashed(adminUser.password)) {
+        const adminHashed = await PASSWORD_UTILS.hash('admin123');
+        await this.users.update(adminUser.id, { password: adminHashed }).catch(function() {});
+      }
     } else {
       const adminHashed = await PASSWORD_UTILS.hash('admin123');
       const uid = FB.getUid();

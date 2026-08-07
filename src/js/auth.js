@@ -1,9 +1,5 @@
 ;(async () => {
-  try {
-    await DB.seed();
-  } catch (e) {
-    console.error('[auth] seed error:', e);
-  }
+  const seedPromise = DB.seed().catch(function (e) { console.error('[auth] seed error:', e); });
 
   const stored = sessionStorage.getItem('laguna_user');
   if (stored) try { const u = JSON.parse(stored); if (u && u.id) { window.location.href = 'index.html'; return; } } catch {}
@@ -119,6 +115,10 @@
     saveLoginState(loginState);
 
     var users = await DB.users.all() || [];
+    if (!users.length) {
+      try { await seedPromise; } catch (e) {}
+      users = (await DB.users.all()) || [];
+    }
     var user = users.find(x => x.username === u);
     var passwordOk = false;
     if (user) {
