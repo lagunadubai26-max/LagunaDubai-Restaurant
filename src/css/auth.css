@@ -1,0 +1,50 @@
+.auth-body{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#f8f6f3 0%,#f3efe9 100%);
+  padding:20px;
+}
+.auth-card{
+  width:440px;max-width:100%;background:#fff;
+  border-radius:var(--radius-2xl);padding:48px 36px 36px;
+  box-shadow:0 25px 60px rgba(0,0,0,.12);
+  text-align:center;animation:authIn .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes authIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:none}}
+.auth-logo-circle{
+  width:96px;height:96px;margin:0 auto 20px;
+  background:linear-gradient(135deg,#d97706,#f59e0b);
+  border-radius:50%;display:flex;justify-content:center;align-items:center;
+  font-size:32px;color:#fff;box-shadow:0 4px 20px rgba(217,119,6,.35);
+}
+.auth-card h1{
+  font-family:'Playfair Display','Cairo',serif;
+  font-size:28px;color:var(--primary);margin-bottom:4px;
+}
+.auth-card > p{color:var(--muted);font-size:14px;margin-bottom:32px}
+.auth-form{text-align:right;animation:fadeIn .3s ease}
+.auth-form .input-group{margin-bottom:18px;position:relative}
+.auth-form .input-group label{display:block;font-size:14px;font-weight:600;color:var(--primary);margin-bottom:6px}
+.auth-form .input-group input{
+  width:100%;height:48px;border:2px solid var(--border);border-radius:12px;
+  padding:0 16px;font-size:15px;font-family:inherit;outline:none;
+  transition:var(--transition);background:#fafaf9;
+}
+.auth-form .input-group input:focus{
+  border-color:var(--accent);background:#fff;
+  box-shadow:0 0 0 4px rgba(217,119,6,.1);
+}
+.auth-form .input-group input::placeholder{color:#a8a29e}
+.auth-form .input-group i{
+  position:absolute;left:16px;top:41px;color:var(--muted);font-size:18px;
+}
+.auth-submit{
+  width:100%;height:50px;border:none;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-light));
+  color:#fff;font-size:16px;font-weight:700;cursor:pointer;
+  transition:var(--transition);font-family:inherit;
+  box-shadow:0 4px 14px rgba(217,119,6,.3);
+  margin-top:8px;
+}
+.auth-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(217,119,6,.4)}
+.auth-submit:active{transform:scale(.97)}
+.auth-error{color:var(--danger);font-size:13px;margin-top:12px;display:none}

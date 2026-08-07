@@ -1,0 +1,111 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    function getUserRole() {
+      return get(/databases/$(database)/documents/user_mappings/$(request.auth.uid)).data.role;
+    }
+
+    function isAdmin() {
+      return isAuth() && getUserRole() == 'Administrator';
+    }
+
+    function isOwner() {
+      return isAuth() && getUserRole() == 'Owner';
+    }
+
+    function isEmployee() {
+      return isAuth() && getUserRole() == 'Employee';
+    }
+
+    function isAdminOrOwner() {
+      return isAdmin() || isOwner();
+    }
+
+    // ── user_mappings: role mapping from anonymous UID → role ──
+    // Bootstrap (first run, no users/u1): any authenticated user can create any mapping
+    // Employee: can only create mapping for themselves with role 'Employee'
+    // Admin: can create mapping for any uid (adds Owners, other Admins)
+    // Owner: cannot create mapping for themselves — Admin adds them
+    match /user_mappings/{uid} {
+      allow read: if isAuth();
+      allow create: if isAdmin() || (
+        request.auth.uid == uid && request.resource.data.role == 'Employee'
+      ) || !exists(/databases/$(database)/documents/users/u1);
+      allow update, delete: if isAdmin();
+    }
+
+    // ── Admin-only collections ──
+    match /users/{docId} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+      allow create: if isAuth() && (
+        isAdmin() || !exists(/databases/$(database)/documents/users/u1)
+      );
+    }
+
+    match /settings/{docId} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+    }
+
+    match /employees/{docId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /customers/{docId} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+    }
+
+    // ── Products: anyone can read, only Admin can write ──
+    match /products/{docId} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+    }
+
+    // ── Expenses: Admin and Owner can write ──
+    match /expenses/{docId} {
+      allow read: if isAuth();
+      allow write: if isAdminOrOwner();
+    }
+
+    // ── Operational collections: any authenticated user ──
+    match /invoices/{docId} {
+      allow read, write: if isAuth();
+    }
+
+    match /attendance/{docId} {
+      allow read, write: if isAuth();
+    }
+
+    match /tables_/{docId} {
+      allow read, write: if isAuth();
+    }
+
+    match /inventory/{docId} {
+      allow read, write: if isAuth();
+    }
+
+    match /inventory_counts/{docId} {
+      allow read, write: if isAuth();
+    }
+
+    match /returns/{docId} {
+      allow read, write: if isAuth();
+    }
+
+    match /categories/{docId} {
+      allow read, write: if isAuth();
+    }
+
+    // ── Catch-all: deny anything not explicitly listed ──
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍽️</text></svg>">
+  <title>المخزون | Laguna Boat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/inventory.css">
+  
+<link rel="stylesheet" href="css/responsive.css"><script src="js/role-head.js"></script></head>
+<body>
+<button class="sidebar-toggle" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="container">
+<aside class="sidebar">
+    <div class="logo">
+        <img src="images/logo.png" alt="Laguna Boat" class="logo-img">
+        <h2>Laguna Boat</h2>
+        <p>Restaurant</p>
+    </div>
+    <nav>
+        <a href="index.html"><i class="fa-solid fa-chart-line"></i><span>لوحة التحكم</span></a>
+        <a href="menu.html"><i class="fa-solid fa-utensils"></i><span>المنيو</span></a>
+        <a href="invoices.html"><i class="fa-solid fa-file-invoice"></i><span>الفواتير</span></a>
+        <a href="returns.html"><i class="fa-solid fa-arrow-rotate-left"></i><span>المرتجعات</span></a>
+        <a href="employees.html"><i class="fa-solid fa-users"></i><span>الموظفين</span></a>
+        <a href="attendance.html"><i class="fa-solid fa-calendar-check"></i><span>الحضور</span></a>
+        <a href="tables.html"><i class="fa-solid fa-table-cells-large"></i><span>الترابيزات</span></a>
+        <a href="inventory.html" class="active"><i class="fa-solid fa-boxes-stacked"></i><span>المخزون</span></a>
+        <a href="expenses.html" class="no-employee"><i class="fa-solid fa-money-bill-transfer"></i><span>المصروفات</span></a>
+        <a href="customers.html"><i class="fa-solid fa-user-group"></i><span>العملاء المميزين</span></a>
+        <a href="daily-report.html" class="no-employee"><i class="fa-solid fa-calendar-day"></i><span>التقرير اليومي</span></a>
+        <a href="reports.html" class="no-employee"><i class="fa-solid fa-chart-simple"></i><span>التقارير</span></a>
+        <a href="qr.html"><i class="fa-solid fa-qrcode"></i><span>QR Code</span></a>
+        <a href="settings.html" class="no-owner"><i class="fa-solid fa-gear"></i><span>الإعدادات</span></a>
+        <a href="products.html" class="no-owner"><i class="fa-solid fa-pizza-slice"></i><span>المنتجات</span></a>
+    </nav>
+    <div class="profile-section">
+        <div class="avatar" id="sidebarAvatar">أ</div>
+        <div class="info">
+            <div class="name" id="sidebarName">الاسم</div>
+            <div class="role" id="sidebarRole">الدور</div>
+            <div class="uid" id="sidebarUid" style="font-size:10px;color:#888;margin-top:2px;direction:ltr"></div>
+        </div>
+        <a href="auth.html" onclick="sessionStorage.removeItem('laguna_user');sessionStorage.removeItem('laguna_token')" style="color:var(--muted);font-size:16px;text-decoration:none" title="تسجيل الخروج"><i class="fa-solid fa-right-from-bracket"></i></a>
+    </div>
+</aside>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1><i class="fa-solid fa-boxes-stacked"></i>المخزون</h1>
+        <p>إدارة مخزون Laguna Boat</p>
+      </div>
+    </div>
+    <div class="topbar" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;background:#fff;padding:15px 25px;border-radius:18px;box-shadow:var(--shadow);">
+      <div class="topbar-left">
+        <p style="color:#777">مرحبًا بك في نظام Laguna Boat</p>
+      </div>
+      <div class="topbar-right" style="display:flex;align-items:center;gap:15px;">
+        <div class="profile" style="display:flex;align-items:center;gap:12px;">
+          <div style="width:45px;height:45px;border-radius:50%;background:var(--accent);display:flex;justify-content:center;align-items:center;color:#fff;font-size:20px;"><i class="fa-solid fa-user"></i></div>
+          <div>
+            <h4 id="profileName" style="font-size:16px;color:var(--primary-light);">جاري التحميل...</h4>
+            <span id="profileRole" style="font-size:13px;color:#888;">...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      if (!sessionStorage.getItem('laguna_user')) window.location.href = 'auth.html';
+      const _user = JSON.parse(sessionStorage.getItem('laguna_user'));
+      if (_user) {
+        document.getElementById('profileName').textContent = _user.name;
+        document.getElementById('profileRole').textContent = _user.role === 'Administrator' ? 'مدير' : _user.role === 'Owner' ? 'م/ محمد الجوهري' : 'موظف';
+      }
+    </script>
+    <section class="inventory-stats">
+      <div class="stat-card"><i class="fa-solid fa-box"></i><div><h2 id="invTotal">0</h2><span>إجمالي الأصناف</span></div></div>
+      <div class="stat-card"><i class="fa-solid fa-circle-check"></i><div><h2 id="invInStock">0</h2><span>متوفر</span></div></div>
+      <div class="stat-card"><i class="fa-solid fa-triangle-exclamation"></i><div><h2 id="invLowStock">0</h2><span>منخفض</span></div></div>
+      <div class="stat-card"><i class="fa-solid fa-circle-xmark"></i><div><h2 id="invOutOfStock">0</h2><span>نفذ</span></div></div>
+    </section>
+    <div class="inventory-tools">
+      <input type="text" id="invSearch" placeholder="بحث باسم المنتج...">
+      <select id="invCategory">
+        <option value="all">كل الأقسام</option>
+        <option value="قهوة">قهوة</option>
+        <option value="ألبان">ألبان</option>
+        <option value="مواد جافة">مواد جافة</option>
+        <option value="مشروبات">مشروبات</option>
+        <option value="حلويات">حلويات</option>
+      </select>
+      <button class="add-btn" id="addInvBtn"><i class="fa-solid fa-plus"></i>إضافة صنف</button>
+      <button class="add-btn" id="weeklyInvBtn" style="background:#d97706;margin-right:8px"><i class="fa-solid fa-calendar-week"></i> جرد أسبوعي</button>
+      <button class="add-btn" id="postponeInvBtn" style="background:#78716c;margin-right:8px"><i class="fa-solid fa-clock"></i> تأجيل الجرد</button>
+    </div>
+    <section class="inventory-table">
+      <div class="table-header">
+        <span>الاسم</span><span>القسم</span><span>الكمية</span><span>الوحدة</span><span>الحد الأدنى</span><span>الحالة</span><span>الإجراءات</span>
+      </div>
+      <div id="invList"></div>
+    </section>
+  </main>
+</div>
+<div class="modal" id="invModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="invModalTitle">إضافة صنف</h2>
+      <button class="close-modal" id="closeInvModal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <label>اسم الصنف</label><input type="text" id="invName">
+      <label>القسم</label>
+      <select id="invCategoryModal">
+        <option value="قهوة">قهوة</option><option value="ألبان">ألبان</option>
+        <option value="مواد جافة">مواد جافة</option><option value="مشروبات">مشروبات</option>
+        <option value="حلويات">حلويات</option>
+      </select>
+      <label>الكمية</label><input type="number" id="invQty" min="0">
+      <label>الوحدة</label>
+      <select id="invUnit"><option value="كجم">كجم</option><option value="لتر">لتر</option><option value="قطعة">قطعة</option><option value="كرتونة">كرتونة</option></select>
+      <label>الحد الأدنى</label><input type="number" id="invMin" min="0">
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" id="cancelInv">إلغاء</button>
+      <button class="confirm-btn" id="saveInv">حفظ</button>
+    </div>
+  </div>
+</div>
+<div class="modal" id="weeklyInvModal">
+  <div class="modal-box" style="max-width:700px">
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-calendar-week"></i> الجرد الأسبوعي</h2>
+      <button class="close-modal" id="closeWeeklyInv"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:16px;color:var(--muted);font-size:14px">سجل الكمية الفعلية لكل صنف في المخزون. لو الكمية الفعلية أقل من الحد الأدنى، هتظهر رسالة تنبيه بعد الحفظ.</p>
+      <div style="max-height:400px;overflow-y:auto;border:1px solid var(--border);border-radius:12px">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead style="background:#f5f5f4;position:sticky;top:0">
+            <tr>
+              <th style="padding:10px;border-bottom:1px solid var(--border);text-align:right">الصنف</th>
+              <th style="padding:10px;border-bottom:1px solid var(--border);text-align:right">النظام</th>
+              <th style="padding:10px;border-bottom:1px solid var(--border);text-align:right">الفعلي</th>
+              <th style="padding:10px;border-bottom:1px solid var(--border);text-align:right">الحد الأدنى</th>
+            </tr>
+          </thead>
+          <tbody id="weeklyInvList"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" id="cancelWeeklyInv">إلغاء</button>
+      <button class="confirm-btn" id="saveWeeklyInv" style="background:#d97706">حفظ الجرد</button>
+    </div>
+  </div>
+</div>
+<div id="toastContainer"></div>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/firebase-client.js?v=1"></script>
+<script src="js/sanitize.js"></script>
+<script src="js/data.js?v=7"></script>
+        <script src="js/notifications.js?v=3"></script>
+        <script src="js/inventory.js"></script>
+<script src="js/daily-inventory-check.js?v=2"></script>
+<script src="js/role.js?v=4"></script>
+</body>
+</html>

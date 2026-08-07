@@ -1,0 +1,387 @@
+/* ===========================
+        PAGE HEADER
+=========================== */
+
+.page-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+.page-header h1{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    font-size:38px;
+
+    color:var(--primary);
+
+}
+
+.page-header h1 i{
+
+    color:var(--accent);
+
+}
+
+.page-header p{
+
+    color:#777;
+    margin-top:8px;
+
+}
+
+/* ===========================
+        STATISTICS
+=========================== */
+
+.returns-stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+
+    gap:25px;
+
+    margin-bottom:35px;
+
+}
+
+.stat-card{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:var(--shadow);
+
+}
+
+.stat-card i{
+
+    width:76px;
+    height:76px;
+
+    border-radius:50%;
+
+    background:var(--accent);
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:30px;
+
+}
+
+.stat-card h2{
+
+    font-size:38px;
+
+    color:var(--primary);
+
+    margin-bottom:8px;
+
+}
+
+.stat-card span{
+
+    color:#777;
+
+    font-size:20px;
+
+}
+
+/* ===========================
+        FILTER
+=========================== */
+
+.filter-box{
+
+    background:#fff;
+
+    padding:22px;
+
+    border-radius:20px;
+
+    box-shadow:var(--shadow);
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr 1fr 1fr auto;
+
+    gap:18px;
+
+    margin-bottom:35px;
+
+}
+
+.filter-box input,
+.filter-box select{
+
+    height:56px;
+
+    border:1px solid #ddd;
+
+    border-radius:14px;
+
+    padding:0 18px;
+
+    font-size:17px;
+
+    font-family:"Cairo",sans-serif;
+
+    outline:none;
+
+}
+
+.search-btn{
+
+    background:var(--accent);
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:0 30px;
+
+    font-size:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    transition:var(--transition);
+
+}
+
+.search-btn:hover{
+
+    background:#0da4b6;
+
+}
+/* ===========================
+        RETURNS TABLE
+=========================== */
+
+.returns-table{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    box-shadow:var(--shadow);
+
+    overflow:hidden;
+
+}
+
+.table-header,
+.table-row{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr
+    1fr
+    1.5fr
+    .8fr
+    1fr
+    1.2fr
+    1fr
+    1.2fr;
+
+    align-items:center;
+
+    text-align:center;
+
+    padding:18px 22px;
+
+}
+
+.table-header{
+
+    background:var(--primary);
+
+    color:#fff;
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+.table-row{
+
+    border-bottom:1px solid #ececec;
+
+    transition:var(--transition);
+
+}
+
+.table-row:last-child{
+
+    border-bottom:none;
+
+}
+
+.table-row:hover{
+
+    background:#f8fbfd;
+
+}
+
+/* ===========================
+        STATUS
+=========================== */
+
+.status{
+
+    padding:8px 16px;
+
+    border-radius:30px;
+
+    color:#fff;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    display:inline-block;
+
+    margin:auto;
+
+}
+
+.status.success{
+
+    background:#15B66D;
+
+}
+
+.status.pending{
+
+    background:#F4A825;
+
+}
+
+.status.cancel{
+
+    background:#E74C3C;
+
+}
+
+/* ===========================
+        ACTION BUTTONS
+=========================== */
+
+.actions{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+}
+
+.actions button{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:var(--transition);
+
+}
+
+.actions button:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.view-btn{
+
+    background:var(--accent);
+
+}
+
+.edit-btn{
+
+    background:#F4A825;
+
+}
+
+.delete-btn{
+
+    background:#E74C3C;
+
+}
+
+/* ===========================
+        RESPONSIVE
+=========================== */
+
+@media(max-width:1200px){
+
+    .returns-table{
+
+        overflow-x:auto;
+
+    }
+
+    .table-header,
+    .table-row{
+
+        min-width:1200px;
+
+    }
+
+    .filter-box{
+
+        min-width:1100px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .returns-stats{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
