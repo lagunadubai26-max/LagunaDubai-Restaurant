@@ -1,0 +1,208 @@
+/* === Sidebar Toggle Button (mobile) === */
+.sidebar-toggle {
+  display: none; position: fixed; top: 12px; right: 12px; z-index: 200;
+  width: 44px; height: 44px; border-radius: 12px; border: none;
+  background: var(--primary); color: #fff; font-size: 20px;
+  cursor: pointer; align-items: center; justify-content: center;
+}
+.sidebar-overlay { display: none; }
+
+/* === Laptop (1025–1200) === */
+@media (max-width: 1200px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-content { grid-template-columns: 1fr; }
+  .menu-layout { grid-template-columns: 1fr; }
+  .order-box { position: static; width: 100%; height: auto; top: auto; margin-top: 24px; }
+  .products { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .qr-content { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+}
+
+/* === Tablet (769–1024) === */
+@media (max-width: 1024px) {
+  .main { padding: 20px; }
+  .page-header h1 { font-size: 26px; }
+  .stat-cards { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .filter-box { flex-wrap: wrap; }
+  .products { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+  .table-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .qr-content { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .confirm-box { width: 90% !important; max-width: 420px; }
+}
+
+/* === Mobile (≤768) === */
+@media (max-width: 768px) {
+  .sidebar-toggle { display: flex; }
+
+  .container { flex-direction: column; }
+  .sidebar {
+    position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; z-index: 300;
+    transition: right .3s ease; padding-top: 60px;
+  }
+  .sidebar.open { right: 0; }
+  .sidebar-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 250;
+  }
+  .sidebar-overlay.show { display: block; }
+
+  .logo { padding: 20px 16px; }
+  .logo-img { width: 56px; height: 56px; }
+  .logo h2 { font-size: 20px; }
+  .sidebar nav a { padding: 12px 16px; font-size: 14px; }
+  .profile-section { padding: 12px 16px; }
+
+  .main { margin-right: 0; width: 100%; padding: 14px; }
+
+  .page-header { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 20px; }
+  .page-header h1 { font-size: 22px; }
+  .page-header p { font-size: 13px; }
+
+  .cards { grid-template-columns: 1fr; gap: 14px; }
+  .stat-card { padding: 18px; }
+  .stat-card h2 { font-size: 22px; }
+
+  .topbar { flex-direction: column; gap: 10px; align-items: stretch; padding: 12px 16px !important; margin-bottom: 20px !important; }
+  .topbar h1 { font-size: 22px; }
+
+  .filter-box { flex-direction: column; gap: 10px; padding: 14px; }
+  .filter-box input, .filter-box select { width: 100%; height: 44px; font-size: 14px; }
+
+  .dashboard-content { grid-template-columns: 1fr; gap: 16px; }
+
+  /* Tables */
+  .table-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+  .table-card { padding: 16px; }
+  .table-card h3 { font-size: 16px; }
+
+  /* Invoices */
+  .invoice-table { overflow-x: auto; }
+  .invoice-row { min-width: 700px; }
+
+  /* Products page */
+  .products-table-wrap { overflow-x: auto; }
+  .products-table-wrap table { min-width: 700px; }
+
+  /* Menu */
+  .menu-header { flex-direction: column; gap: 12px; align-items: stretch; }
+  .menu-header h1 { font-size: 24px; }
+  .search-box { width: 100%; }
+  .search-box input { height: 44px; font-size: 15px; }
+
+  .menu-layout { grid-template-columns: 1fr; gap: 16px; }
+
+  .products { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .product-card { padding: 14px; height: auto; min-height: 280px; }
+  .product-card .menu-icon { width: 100%; height: 130px; margin-bottom: 10px; }
+  .product-card h3 { font-size: 15px; margin-bottom: 4px; }
+  .product-card p { font-size: 12px; margin-bottom: 6px; }
+  .product-card .desc { font-size: 11px; margin-bottom: 6px; }
+  .product-card h2 { font-size: 18px; margin-bottom: 10px; }
+  .product-card button { height: 40px; font-size: 14px; }
+
+  .categories { overflow-x: auto; flex-wrap: nowrap; gap: 8px; padding: 10px 0; }
+  .category-btn { white-space: nowrap; padding: 8px 14px; font-size: 13px; flex-shrink: 0; }
+
+  /* Hide order box, show floating cart */
+  .order-box { display: none; }
+  .cart-float { display: flex; }
+
+  .menu-header { flex-direction: column; gap: 12px; }
+  .menu-header h1 { font-size: 22px; }
+  .search-box input { height: 42px; font-size: 14px; }
+
+  .order-box { padding: 16px; border-radius: 16px; }
+  .order-box h2 { font-size: 18px; }
+  .order-item { padding: 10px; flex-wrap: wrap; gap: 6px; }
+  .order-footer { flex-direction: column; gap: 10px; }
+  .order-footer .total { width: 100%; justify-content: space-between; }
+  .order-footer button { width: 100%; }
+
+  /* QR */
+  .qr-content { grid-template-columns: 1fr; gap: 16px; }
+  .qr-card { padding: 20px; }
+
+  /* Attendance */
+  .attendance-grid { grid-template-columns: 1fr; gap: 16px; }
+
+  /* Employees */
+  .employees-table-wrap { overflow-x: auto; }
+  .employees-table-wrap table { min-width: 650px; }
+
+  /* Customers */
+  .customers-table-wrap { overflow-x: auto; }
+  .customers-table-wrap table { min-width: 600px; }
+
+  /* Modals */
+  .confirm-modal .confirm-box { width: 92% !important; max-width: 380px; padding: 24px 20px; }
+  .confirm-modal .confirm-box h3 { font-size: 18px; }
+  .confirm-modal input, .confirm-modal select { height: 48px !important; font-size: 16px !important; }
+  .confirm-buttons { flex-direction: column; gap: 10px; }
+  .confirm-buttons button { width: 100%; height: 48px; font-size: 16px; }
+
+  /* Stats */
+  .invoice-stats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .invoice-stats .stat-card { padding: 16px; }
+  .invoice-stats .stat-card h2 { font-size: 20px; }
+
+  /* Settings */
+  .settings-grid { grid-template-columns: 1fr; gap: 20px; }
+
+  /* Reports */
+  .report-cards { grid-template-columns: 1fr; gap: 14px; }
+  .chart-container { height: 250px; }
+
+  /* Expenses */
+  .expenses-table-wrap { overflow-x: auto; }
+  .expenses-table-wrap table { min-width: 500px; }
+
+  /* Returns */
+  .returns-table-wrap { overflow-x: auto; }
+  .returns-table-wrap table { min-width: 600px; }
+
+  /* Reports mobile */
+  .report-controls { flex-direction: column; align-items: stretch; }
+  .report-controls .month-picker-wrap { width: 100%; }
+  .report-controls .month-picker-wrap input[type="month"] { width: 100%; }
+  .report-controls button { width: 100%; justify-content: center; }
+
+  /* Inventory tools mobile */
+  .inventory-tools { flex-direction: column; gap: 10px; }
+  .inventory-tools input,
+  .inventory-tools select { width: 100%; }
+  .inventory-tools .add-btn { width: 100%; margin-right: 0 !important; justify-content: center; }
+
+  /* Inventory table mobile */
+  .inventory-table { overflow-x: auto; }
+  .inventory-table .table-header,
+  .inventory-table .table-row { min-width: 650px; }
+
+  /* Attendance table mobile */
+  .attendance-table { overflow-x: auto; }
+  .attendance-table .table-header,
+  .attendance-table .attendance-row { min-width: 600px; }
+
+  /* Employee details mobile */
+  #employeeDetailsModal .modal-box { max-width: 95% !important; }
+  #employeeDetailsModal .modal-body > div:first-child { grid-template-columns: 1fr !important; }
+
+  /* Day close modal mobile */
+  #dayCloseModal .modal-box { max-width: 95% !important; }
+  #dashDayCloseModal .modal-box { max-width: 95% !important; }
+
+  /* Dashboard topbar mobile */
+  .topbar > div:last-child { flex-wrap: wrap; gap: 8px !important; }
+  .topbar button.btn-dayclose { width: 100%; justify-content: center; }
+}
+
+/* === Small Mobile (≤400) === */
+@media (max-width: 400px) {
+  .products { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .product-card { padding: 8px; min-height: 200px; }
+  .product-card .menu-icon { height: 80px; }
+  .product-card h3 { font-size: 11px; }
+  .product-card .desc { font-size: 10px; margin-bottom: 4px; }
+  .product-card h2 { font-size: 13px; margin-bottom: 6px; }
+  .product-card button { height: 32px; font-size: 11px; padding: 4px 8px; }
+  .main { padding: 8px; }
+  .stat-card h2 { font-size: 18px; }
+  .invoice-stats { grid-template-columns: 1fr 1fr; gap: 8px; }
+}

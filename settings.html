@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍽️</text></svg>">
+  <title>الإعدادات | Laguna Boat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/settings.css">
+  
+<link rel="stylesheet" href="css/responsive.css"><script src="js/role-head.js"></script></head>
+<body>
+<button class="sidebar-toggle" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="container">
+<aside class="sidebar">
+    <div class="logo">
+        <img src="images/logo.png" alt="Laguna Boat" class="logo-img">
+        <h2>Laguna Boat</h2>
+        <p>Restaurant</p>
+    </div>
+    <nav>
+        <a href="index.html"><i class="fa-solid fa-chart-line"></i><span>لوحة التحكم</span></a>
+        <a href="menu.html"><i class="fa-solid fa-utensils"></i><span>المنيو</span></a>
+        <a href="invoices.html"><i class="fa-solid fa-file-invoice"></i><span>الفواتير</span></a>
+        <a href="returns.html"><i class="fa-solid fa-arrow-rotate-left"></i><span>المرتجعات</span></a>
+        <a href="employees.html"><i class="fa-solid fa-users"></i><span>الموظفين</span></a>
+        <a href="attendance.html"><i class="fa-solid fa-calendar-check"></i><span>الحضور</span></a>
+        <a href="tables.html"><i class="fa-solid fa-table-cells-large"></i><span>الترابيزات</span></a>
+        <a href="inventory.html"><i class="fa-solid fa-boxes-stacked"></i><span>المخزون</span></a>
+        <a href="expenses.html" class="no-employee"><i class="fa-solid fa-money-bill-transfer"></i><span>المصروفات</span></a>
+        <a href="customers.html"><i class="fa-solid fa-user-group"></i><span>العملاء المميزين</span></a>
+        <a href="daily-report.html" class="no-employee"><i class="fa-solid fa-calendar-day"></i><span>التقرير اليومي</span></a>
+        <a href="reports.html" class="no-employee"><i class="fa-solid fa-chart-simple"></i><span>التقارير</span></a>
+        <a href="qr.html"><i class="fa-solid fa-qrcode"></i><span>QR Code</span></a>
+        <a href="settings.html" class="active no-owner"><i class="fa-solid fa-gear"></i><span>الإعدادات</span></a>
+        <a href="products.html" class="no-owner"><i class="fa-solid fa-pizza-slice"></i><span>المنتجات</span></a>
+    </nav>
+    <div class="profile-section">
+        <div class="avatar" id="sidebarAvatar">أ</div>
+        <div class="info">
+            <div class="name" id="sidebarName">الاسم</div>
+            <div class="role" id="sidebarRole">الدور</div>
+            <div class="uid" id="sidebarUid" style="font-size:10px;color:#888;margin-top:2px;direction:ltr"></div>
+        </div>
+        <a href="auth.html" onclick="sessionStorage.removeItem('laguna_user');sessionStorage.removeItem('laguna_token')" style="color:var(--muted);font-size:16px;text-decoration:none" title="تسجيل الخروج"><i class="fa-solid fa-right-from-bracket"></i></a>
+    </div>
+</aside>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1><i class="fa-solid fa-gear"></i>الإعدادات</h1>
+        <p>إعدادات نظام Laguna Boat</p>
+      </div>
+    </div>
+    <div class="topbar" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;background:#fff;padding:15px 25px;border-radius:18px;box-shadow:var(--shadow);">
+      <div class="topbar-left">
+        <p style="color:#777">مرحبًا بك في نظام Laguna Boat</p>
+      </div>
+      <div class="topbar-right" style="display:flex;align-items:center;gap:15px;">
+        <div class="profile" style="display:flex;align-items:center;gap:12px;">
+          <div style="width:45px;height:45px;border-radius:50%;background:var(--accent);display:flex;justify-content:center;align-items:center;color:#fff;font-size:20px;"><i class="fa-solid fa-user"></i></div>
+          <div>
+            <h4 id="profileName" style="font-size:16px;color:var(--primary-light);">جاري التحميل...</h4>
+            <span id="profileRole" style="font-size:13px;color:#888;">...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      if (!sessionStorage.getItem('laguna_user')) window.location.href = 'auth.html';
+      const _user = JSON.parse(sessionStorage.getItem('laguna_user'));
+      if (_user) {
+        document.getElementById('profileName').textContent = _user.name;
+        document.getElementById('profileRole').textContent = _user.role === 'Administrator' ? 'مدير' : _user.role === 'Owner' ? 'م/ محمد الجوهري' : 'موظف';
+      }
+    </script>
+    <section class="settings-grid">
+      <div class="settings-card">
+        <h3><i class="fa-solid fa-percentage"></i>الضرائب والرسوم</h3>
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:4px;font-weight:400;font-size:14px;cursor:pointer">
+          <input type="checkbox" id="enableTax"> تفعيل ضريبة القيمة المضافة (VAT)
+        </label>
+        <input type="number" id="taxRate" min="0" max="100" placeholder="14">
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:4px;margin-top:10px;font-weight:400;font-size:14px;cursor:pointer">
+          <input type="checkbox" id="enableService"> تفعيل خدمة الضيافة
+        </label>
+        <input type="number" id="serviceTax" min="0" max="100" value="10" placeholder="10">
+      </div>
+      <div class="settings-card">
+        <h3><i class="fa-solid fa-gear"></i>إعدادات الطباعة</h3>
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-weight:400;font-size:14px;cursor:pointer">
+          <input type="checkbox" id="autoPrintReceipt" checked> طباعة الفاتورة تلقائياً بعد الدفع
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-weight:400;font-size:14px;cursor:pointer">
+          <input type="checkbox" id="autoPrintKitchen" checked> طباعة أمر المطبخ تلقائياً
+        </label>
+        <label style="display:block;margin-bottom:4px;font-weight:600;font-size:13px">عدد نسخ الفاتورة</label>
+        <input type="number" id="printCopies" min="1" max="5" value="1" style="width:80px;height:42px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-family:inherit;font-size:14px;margin-bottom:10px">
+        <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-weight:600;font-size:13px">
+          <input type="checkbox" id="enablePrintAgent"> استخدام Print Agent (لطابعة USB/مطبخ)
+        </label>
+        <label style="display:block;margin-bottom:4px;font-weight:600;font-size:13px">رابط Print Agent</label>
+        <input type="text" id="printAgentUrl" placeholder="http://192.168.1.100:3000" style="width:100%;height:42px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-family:inherit;font-size:14px;direction:ltr">
+        <label style="display:block;margin-bottom:4px;margin-top:8px;font-weight:600;font-size:13px">مفتاح API للـ Print Agent</label>
+        <input type="password" id="printAgentKey" placeholder="اتركه فارغ لو مش عايز حماية" style="width:100%;height:42px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-family:inherit;font-size:14px;direction:ltr">
+      </div>
+    </section>
+    <div class="settings-actions" style="display:flex;justify-content:center;margin-top:20px">
+      <button class="save-settings" id="saveSettings"><i class="fa-solid fa-floppy-disk"></i>حفظ الإعدادات</button>
+    </div>
+  </main>
+</div>
+
+<div class="modal" id="resetConfirmModal">
+  <div class="modal-box" style="max-width:400px">
+    <div class="modal-header">
+      <h2>⚠️ تأكيد مسح البيانات</h2>
+      <button class="close-modal" id="closeResetConfirm"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" style="text-align:center;padding:25px">
+      <div style="font-size:48px;margin-bottom:12px">⚠️</div>
+      <p style="font-size:15px;font-weight:700;color:#dc2626;margin-bottom:8px">هذا الإجراء لا يمكن التراجع عنه!</p>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:16px">سيتم حذف كل الفواتير والطلبات والموظفين والمخزون والإعدادات من Firebase.</p>
+      <p style="font-size:13px;margin-bottom:10px">اكتب <strong style="color:#dc2626">تأكيد</strong> للمتابعة:</p>
+      <input type="text" id="resetConfirmWord" placeholder="اكتب تأكيد" style="width:100%;height:44px;border:2px solid var(--border);border-radius:10px;padding:0 14px;font-family:inherit;font-size:16px;text-align:center;outline:none">
+    </div>
+    <div class="modal-footer" style="justify-content:center;gap:12px;padding:16px 25px">
+      <button class="cancel-btn" id="cancelResetConfirm" style="flex:1;height:44px;font-size:15px">إلغاء</button>
+      <button class="confirm-btn" id="confirmResetBtn" style="flex:1;height:44px;font-size:15px;background:#dc2626" disabled>حذف كل البيانات</button>
+    </div>
+  </div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/firebase-client.js?v=1"></script>
+<script src="js/sanitize.js"></script>
+<script src="js/password-utils.js"></script>
+<script src="js/data.js?v=7"></script>
+        <script src="js/notifications.js?v=3"></script>
+        <script src="js/printer.js"></script>
+<script src="js/template-engine.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/daily-inventory-check.js?v=2"></script>
+<script src="js/role.js?v=4"></script>
+</body>
+</html>

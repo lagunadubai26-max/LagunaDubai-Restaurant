@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍽️</text></svg>">
+  <title>المصروفات | Laguna Boat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/expenses.css">
+  
+<link rel="stylesheet" href="css/responsive.css"><script src="js/role-head.js"></script></head>
+<body>
+<button class="sidebar-toggle" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="container">
+<aside class="sidebar">
+    <div class="logo">
+        <img src="images/logo.png" alt="Laguna Boat" class="logo-img">
+        <h2>Laguna Boat</h2>
+        <p>Restaurant</p>
+    </div>
+    <nav>
+        <a href="index.html"><i class="fa-solid fa-chart-line"></i><span>لوحة التحكم</span></a>
+        <a href="menu.html"><i class="fa-solid fa-utensils"></i><span>المنيو</span></a>
+        <a href="invoices.html"><i class="fa-solid fa-file-invoice"></i><span>الفواتير</span></a>
+        <a href="returns.html"><i class="fa-solid fa-arrow-rotate-left"></i><span>المرتجعات</span></a>
+        <a href="employees.html"><i class="fa-solid fa-users"></i><span>الموظفين</span></a>
+        <a href="attendance.html"><i class="fa-solid fa-calendar-check"></i><span>الحضور</span></a>
+        <a href="tables.html"><i class="fa-solid fa-table-cells-large"></i><span>الترابيزات</span></a>
+        <a href="inventory.html"><i class="fa-solid fa-boxes-stacked"></i><span>المخزون</span></a>
+        <a href="expenses.html" class="active no-employee"><i class="fa-solid fa-money-bill-transfer"></i><span>المصروفات</span></a>
+        <a href="customers.html"><i class="fa-solid fa-user-group"></i><span>العملاء المميزين</span></a>
+        <a href="daily-report.html" class="no-employee"><i class="fa-solid fa-calendar-day"></i><span>التقرير اليومي</span></a>
+        <a href="reports.html" class="no-employee"><i class="fa-solid fa-chart-simple"></i><span>التقارير</span></a>
+        <a href="qr.html"><i class="fa-solid fa-qrcode"></i><span>QR Code</span></a>
+        <a href="settings.html" class="no-owner"><i class="fa-solid fa-gear"></i><span>الإعدادات</span></a>
+        <a href="products.html" class="no-owner"><i class="fa-solid fa-pizza-slice"></i><span>المنتجات</span></a>
+    </nav>
+    <div class="profile-section">
+        <div class="avatar" id="sidebarAvatar">أ</div>
+        <div class="info">
+            <div class="name" id="sidebarName">الاسم</div>
+            <div class="role" id="sidebarRole">الدور</div>
+            <div class="uid" id="sidebarUid" style="font-size:10px;color:#888;margin-top:2px;direction:ltr"></div>
+        </div>
+        <a href="auth.html" onclick="sessionStorage.removeItem('laguna_user');sessionStorage.removeItem('laguna_token')" style="color:var(--muted);font-size:16px;text-decoration:none" title="تسجيل الخروج"><i class="fa-solid fa-right-from-bracket"></i></a>
+    </div>
+</aside>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1><i class="fa-solid fa-money-bill-transfer"></i>المصروفات</h1>
+        <p>إدارة مصروفات Laguna Boat</p>
+      </div>
+    </div>
+    <div class="topbar" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;background:#fff;padding:15px 25px;border-radius:18px;box-shadow:var(--shadow);">
+      <div class="topbar-left">
+        <p style="color:#777">مرحبًا بك في نظام Laguna Boat</p>
+      </div>
+      <div class="topbar-right" style="display:flex;align-items:center;gap:15px;">
+        <div class="profile" style="display:flex;align-items:center;gap:12px;">
+          <div style="width:45px;height:45px;border-radius:50%;background:var(--accent);display:flex;justify-content:center;align-items:center;color:#fff;font-size:20px;"><i class="fa-solid fa-user"></i></div>
+          <div>
+            <h4 id="profileName" style="font-size:16px;color:var(--primary-light);">جاري التحميل...</h4>
+            <span id="profileRole" style="font-size:13px;color:#888;">...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      if (!sessionStorage.getItem('laguna_user')) window.location.href = 'auth.html';
+      const _user = JSON.parse(sessionStorage.getItem('laguna_user'));
+      if (_user) {
+        document.getElementById('profileName').textContent = _user.name;
+        document.getElementById('profileRole').textContent = _user.role === 'Administrator' ? 'مدير' : _user.role === 'Owner' ? 'م/ محمد الجوهري' : 'موظف';
+      }
+    </script>
+    <section class="expense-stats">
+      <div class="stat-card"><i class="fa-solid fa-money-bill-wave"></i><div><h2 id="expTotal">0</h2><span>إجمالي المصروفات</span></div></div>
+      <div class="stat-card"><i class="fa-solid fa-calendar-day"></i><div><h2 id="expToday">0</h2><span>عدد مصروفات الشهر</span></div></div>
+      <div class="stat-card"><i class="fa-solid fa-list"></i><div><h2 id="expCount">0</h2><span>إجمالي كل المصروفات</span></div></div>
+    </section>
+    <div class="report-controls" style="display:flex;gap:12px;align-items:center;margin-bottom:20px;flex-wrap:wrap">
+      <div class="month-picker-wrap" style="display:flex;align-items:center;gap:8px">
+        <label style="font-size:14px;color:var(--text-secondary)"><i class="fa-solid fa-calendar"></i> الشهر:</label>
+        <input type="month" id="expMonth" style="padding:10px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;background:#fff">
+      </div>
+      <button id="exportExpBtn" style="padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-family:inherit"><i class="fa-solid fa-file-export"></i> تصدير CSV</button>
+    </div>
+    <div class="expense-form">
+      <input type="text" id="expDesc" placeholder="وصف المصروف">
+      <input type="number" id="expAmount" placeholder="المبلغ">
+      <select id="expCategory">
+        <option value="إيجار">إيجار</option>
+        <option value="فواتير">فواتير</option>
+        <option value="مشتريات">مشتريات</option>
+        <option value="مرتبات">مرتبات</option>
+        <option value="صيانة">صيانة</option>
+        <option value="أخرى">أخرى</option>
+      </select>
+      <button class="add-btn" id="addExpBtn"><i class="fa-solid fa-plus"></i>إضافة</button>
+    </div>
+    <section class="expense-table">
+      <div class="table-header">
+        <span>الوصف</span><span>القسم</span><span>المبلغ</span><span>التاريخ</span><span>الإجراءات</span>
+      </div>
+      <div id="expList"></div>
+    </section>
+  </main>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/firebase-client.js?v=1"></script>
+<script src="js/sanitize.js"></script>
+<script src="js/data.js?v=7"></script>
+        <script src="js/notifications.js?v=3"></script>
+        <script src="js/expenses.js?v=1"></script>
+<script src="js/daily-inventory-check.js?v=2"></script>
+<script src="js/role.js?v=4"></script>
+</body>
+</html>

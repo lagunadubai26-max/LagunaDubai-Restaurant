@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍽️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    
+
+    <title>Laguna Boat - Menu</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu.css">
+<link rel="stylesheet" href="css/responsive.css"><script src="js/role-head.js"></script></head>
+
+<body>
+<button class="sidebar-toggle" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="container">
+
+    <!-- Sidebar -->
+
+<aside class="sidebar">
+    <div class="logo">
+        <img src="images/logo.png" alt="Laguna Boat" class="logo-img">
+        <h2>Laguna Boat</h2>
+        <p>Restaurant</p>
+    </div>
+    <nav>
+        <a href="index.html"><i class="fa-solid fa-chart-line"></i><span>لوحة التحكم</span></a>
+        <a href="menu.html" class="active"><i class="fa-solid fa-utensils"></i><span>المنيو</span></a>
+        <a href="invoices.html"><i class="fa-solid fa-file-invoice"></i><span>الفواتير</span></a>
+        <a href="returns.html"><i class="fa-solid fa-arrow-rotate-left"></i><span>المرتجعات</span></a>
+        <a href="employees.html"><i class="fa-solid fa-users"></i><span>الموظفين</span></a>
+        <a href="attendance.html"><i class="fa-solid fa-calendar-check"></i><span>الحضور</span></a>
+        <a href="tables.html"><i class="fa-solid fa-table-cells-large"></i><span>الترابيزات</span></a>
+        <a href="inventory.html"><i class="fa-solid fa-boxes-stacked"></i><span>المخزون</span></a>
+        <a href="expenses.html" class="no-employee"><i class="fa-solid fa-money-bill-transfer"></i><span>المصروفات</span></a>
+        <a href="customers.html"><i class="fa-solid fa-user-group"></i><span>العملاء المميزين</span></a>
+        <a href="daily-report.html" class="no-employee"><i class="fa-solid fa-calendar-day"></i><span>التقرير اليومي</span></a>
+        <a href="reports.html" class="no-employee"><i class="fa-solid fa-chart-simple"></i><span>التقارير</span></a>
+        <a href="qr.html"><i class="fa-solid fa-qrcode"></i><span>QR Code</span></a>
+        <a href="settings.html" class="no-owner"><i class="fa-solid fa-gear"></i><span>الإعدادات</span></a>
+        <a href="products.html" class="no-owner"><i class="fa-solid fa-pizza-slice"></i><span>المنتجات</span></a>
+    </nav>
+    <div class="profile-section">
+        <div class="avatar" id="sidebarAvatar">أ</div>
+        <div class="info">
+            <div class="name" id="sidebarName">الاسم</div>
+            <div class="role" id="sidebarRole">الدور</div>
+            <div class="uid" id="sidebarUid" style="font-size:10px;color:#888;margin-top:2px;direction:ltr"></div>
+        </div>
+        <a href="auth.html" onclick="sessionStorage.removeItem('laguna_user');sessionStorage.removeItem('laguna_token')" style="color:var(--muted);font-size:16px;text-decoration:none" title="تسجيل الخروج"><i class="fa-solid fa-right-from-bracket"></i></a>
+    </div>
+</aside>
+
+    <!-- Main -->
+
+    <main class="main">
+
+        <header class="menu-header">
+
+            <div>
+                <h1>المنيو</h1>
+                <p>اختر الأصناف لإضافتها إلى الطلب</p>
+            </div>
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="ابحث عن منتج...">
+
+            </div>
+
+        </header>
+
+        
+
+        <!-- Categories -->
+
+        <div class="categories" id="menuCategories">
+
+            <button class="category-btn active" data-category="all">الكل</button>
+
+        </div>
+
+        <!-- Content -->
+
+        <section class="menu-layout">
+
+            <!-- Products -->
+            <section class="products"></section>
+
+<!-- نهاية المنتجات -->
+
+            <!-- Order Box -->
+            <aside class="order-box">
+
+                <h2>الطلب الحالي</h2>
+
+                <div class="table-input" style="padding:0 16px 10px;border-bottom:1px solid var(--border)">
+                  <label style="font-size:12px;font-weight:600;color:var(--primary-light);display:block;margin-bottom:4px;">رقم الطاولة</label>
+                  <input type="number" id="tableInput" placeholder="اختياري" style="width:100%;height:36px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:14px;font-family:inherit;outline:none;background:#fafaf9" min="0">
+                </div>
+
+                <div class="order-list">
+
+                    <div class="order-item">
+                        <span>لا توجد منتجات</span>
+                    </div>
+
+                </div>
+
+                <button id="autoPrintToggle" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-family:inherit;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s">
+                  <i class="fa-solid fa-print"></i>
+                  <span>الطباعة التلقائية</span>
+                  <span id="autoPrintStatus" style="padding:2px 10px;border-radius:20px;font-size:12px;font-weight:700">مفعلة</span>
+                </button>
+
+                <div class="order-footer">
+                    <button class="clear-order">
+                        <i class="fa-solid fa-trash"></i>
+                        مسح الكل
+                    </button>
+                    <div class="total">
+                        <span>الإجمالي</span>
+                        <strong>0 جنيه</strong>
+                    </div>
+
+                    <button class="checkout">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        إتمام الطلب
+                    </button>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- Checkout Modal -->
+<div class="confirm-modal" id="checkoutModal">
+  <div class="confirm-box" style="width:440px;text-align:right;">
+    <i class="fa-solid fa-file-invoice"></i>
+    <h3 style="text-align:center;">إتمام الطلب</h3>
+    <div class="checkout-form" style="margin:20px 0;">
+      <div id="checkoutCustomerSection" style="margin-bottom:15px;">
+        <label style="display:block;margin-bottom:6px;font-weight:600;color:var(--primary-light);font-size:14px;">نوع العميل</label>
+        <select id="checkoutCustomerType" class="checkout-input">
+          <option value="regular">عميل عادي</option>
+          <option value="special">عميل خاص</option>
+        </select>
+      </div>
+      <div id="checkoutSpecialFields" style="display:none;margin-bottom:15px;">
+        <div style="margin-bottom:12px;">
+          <label style="display:block;margin-bottom:6px;font-weight:600;color:var(--primary-light);font-size:14px;">اسم العميل الخاص</label>
+          <input type="text" id="checkoutSpecialName" placeholder="اسم العميل" class="checkout-input" list="custList">
+          <datalist id="custList"></datalist>
+        </div>
+        <div>
+          <label style="display:block;margin-bottom:6px;font-weight:600;color:var(--primary-light);font-size:14px;">السعر المخصص (إجمالي)</label>
+          <input type="number" id="checkoutSpecialPrice" placeholder="0" class="checkout-input">
+        </div>
+      </div>
+      <div style="margin-bottom:15px;">
+        <label style="display:block;margin-bottom:6px;font-weight:600;color:var(--primary-light);font-size:14px;">طريقة الدفع</label>
+        <select id="checkoutMethod" class="checkout-input">
+          <option value="Cash">كاش</option>
+          <option value="Visa">فيزا</option>
+          <option value="Wallet">محفظة</option>
+        </select>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#f8f6f3;border-radius:12px;margin-bottom:15px;">
+        <span style="font-size:16px;font-weight:700;color:var(--primary);">الإجمالي</span>
+        <span id="checkoutTotal" style="font-size:22px;font-weight:800;color:var(--accent);">0 جنيه</span>
+      </div>
+      <div id="checkoutPaidSection" style="margin-bottom:10px;">
+        <label style="display:block;margin-bottom:6px;font-weight:600;color:var(--primary-light);font-size:14px;">المبلغ المدفوع من الزبون</label>
+        <input type="number" id="checkoutPaid" placeholder="المبلغ المدفوع" class="checkout-input">
+      </div>
+      <div id="checkoutRemainingSection" style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-radius:12px;">
+        <span id="checkoutRemainingLabel" style="font-size:15px;font-weight:600;">الباقي للعميل</span>
+        <span id="checkoutRemaining" style="font-size:18px;font-weight:800;">0 جنيه</span>
+      </div>
+    </div>
+    <div class="confirm-buttons" style="margin-top:20px;gap:12px;">
+      <button class="cancel-btn" id="cancelCheckout" style="flex:1;height:48px;border-radius:12px;font-size:16px;font-weight:600;background:#f5f5f4;color:var(--primary);border:none;cursor:pointer;">إلغاء</button>
+      <button class="confirm-btn" id="confirmCheckout" style="flex:1;height:48px;border-radius:12px;font-size:16px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:#fff;border:none;cursor:pointer;">تأكيد الدفع</button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating cart button (mobile) -->
+<button class="cart-float" id="cartFloat"><i class="fa-solid fa-bag-shopping"></i><span class="badge" id="cartBadge">0</span></button>
+
+<!-- Cart bottom sheet (mobile) -->
+<div class="cart-sheet" id="cartSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <h2>الطلب الحالي</h2>
+    <button class="sheet-close" id="sheetClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="order-list" id="sheetOrderList"></div>
+  <div class="order-footer">
+    <button class="clear-order" id="sheetClear"><i class="fa-solid fa-trash"></i> مسح الكل</button>
+    <div class="total"><span>الإجمالي</span><strong id="sheetTotal">0 جنيه</strong></div>
+    <button class="checkout" id="sheetCheckout"><i class="fa-solid fa-cart-shopping"></i> إتمام الطلب</button>
+  </div>
+</div>
+
+<!-- نافذة تأكيد مسح الطلب -->
+<div class="confirm-modal" id="confirmModal">
+
+    <div class="confirm-box">
+
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+        <h3>مسح جميع الطلبات؟</h3>
+
+        <p>سيتم حذف جميع المنتجات من الطلب الحالي.</p>
+
+        <div class="confirm-buttons">
+
+            <button class="cancel-btn">إلغاء</button>
+
+            <button class="confirm-btn">مسح الكل</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Success Modal (بدون browser alert/confirm) -->
+<div class="confirm-modal" id="successModal">
+  <div class="confirm-box" style="max-width:420px;text-align:center">
+    <i class="fa-solid fa-circle-check" style="font-size:48px;color:#059669;margin-bottom:12px"></i>
+    <h3 style="margin-bottom:8px" id="successTitle">تم إنشاء الفاتورة</h3>
+    <div id="successDetails" style="font-size:14px;color:var(--primary-light);line-height:1.8;margin-bottom:16px;text-align:right;background:#f8f6f3;border-radius:12px;padding:14px 18px"></div>
+    <div class="confirm-buttons" id="successButtons" style="gap:10px"></div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/firebase-client.js?v=1"></script>
+<script src="js/sanitize.js"></script>
+<script src="js/password-utils.js"></script>
+<script src="js/data.js?v=7"></script>
+        <script src="js/notifications.js?v=3"></script>
+        <script src="js/printer.js"></script>
+<script src="js/template-engine.js"></script>
+<script src="js/menu.js?v=5"></script>
+<script src="js/daily-inventory-check.js?v=2"></script>
+<script src="js/role.js?v=4"></script>
+
+</body>
+</html>
