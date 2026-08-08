@@ -1,5 +1,20 @@
 (function(){
   try {
+    // ── Page entrance stagger (runs before session checks) ──
+    document.addEventListener('DOMContentLoaded', function () {
+      try {
+        var main = document.querySelector('.main');
+        if (!main) return;
+        var kids = main.children;
+        for (var i = 0; i < kids.length; i++) {
+          if (kids[i].classList) {
+            kids[i].classList.add('anim-in');
+            kids[i].style.animationDelay = Math.min(0.08 * i, 0.45) + 's';
+          }
+        }
+      } catch (e) {}
+    });
+
     var u = JSON.parse(sessionStorage.getItem('laguna_rest_user'));
     if (!u) return;
 
