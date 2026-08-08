@@ -1,13 +1,29 @@
 .auth-body{
   min-height:100vh;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,#f8f6f3 0%,#f3efe9 100%);
-  padding:20px;
+  background:linear-gradient(135deg,#f8f6f3 0%,#f3efe9 50%,#fdf4e7 100%);
+  background-size:200% 200%;animation:authBgShift 14s ease infinite;
+  padding:20px;position:relative;overflow:hidden;
 }
+@keyframes authBgShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.auth-body::before,.auth-body::after{
+  content:'';position:absolute;border-radius:50%;filter:blur(80px);
+  opacity:.5;pointer-events:none;z-index:0;
+}
+.auth-body::before{
+  width:380px;height:380px;background:rgba(217,119,6,.28);
+  top:-130px;right:-130px;animation:blobFloat 9s ease-in-out infinite;
+}
+.auth-body::after{
+  width:330px;height:330px;background:rgba(37,99,235,.14);
+  bottom:-110px;left:-110px;animation:blobFloat 12s ease-in-out infinite reverse;
+}
+@keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(32px,26px) scale(1.1)}}
 .auth-card{
   width:440px;max-width:100%;background:#fff;
   border-radius:var(--radius-2xl);padding:48px 36px 36px;
   box-shadow:0 25px 60px rgba(0,0,0,.12);
-  text-align:center;animation:authIn .5s cubic-bezier(.34,1.56,.64,1);
+  text-align:center;animation:authIn .55s cubic-bezier(.34,1.56,.64,1);
+  position:relative;z-index:1;
 }
 @keyframes authIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:none}}
 .auth-logo-circle{
