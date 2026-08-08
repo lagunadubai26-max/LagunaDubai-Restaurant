@@ -112,7 +112,7 @@ async function showDayReport() {
 
     const summaryHtml = (title, cards, extra) =>
       '<div class="dr-header">' +
-        '<img src="images/logo.png" alt="Laguna Boat">' +
+        '<img src="images/logo.png" alt="LagunaDubai">' +
         '<h2>\u0644\u0627\u062c\u0648\u0646\u0627 \u062f\u0628\u064a - \u0643\u0627\u0641\u064a\u0647 \u0648\u0645\u0637\u0639\u0645</h2>' +
         '<p>' + title + ' - ' + dateVal + '</p>' +
       '</div>' +
@@ -157,7 +157,7 @@ async function showDayReport() {
 
       dayReportEl.innerHTML =
         '<div class="dr-header">' +
-          '<img src="images/logo.png" alt="Laguna Boat">' +
+          '<img src="images/logo.png" alt="LagunaDubai">' +
           '<h2>\u0644\u0627\u062c\u0648\u0646\u0627 \u062f\u0628\u064a - \u0643\u0627\u0641\u064a\u0647 \u0648\u0645\u0637\u0639\u0645</h2>' +
           '<p>\u0627\u0644\u062a\u0642\u0631\u064a\u0631 \u0627\u0644\u064a\u0648\u0645\u064a - ' + dateVal + '</p>' +
         '</div>' +

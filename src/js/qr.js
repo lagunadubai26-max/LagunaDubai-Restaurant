@@ -1,4 +1,4 @@
-const BASE = window.location.protocol === 'file:' ? 'menu.html' : window.location.origin + '/LagunaBoat-Restaurant/menu.html';
+const BASE = window.location.protocol === 'file:' ? 'menu.html' : window.location.origin + '/LagunaDubai-Restaurant/menu.html';
 const container = document.getElementById('qrContent');
 
 function renderCard(t, section) {
