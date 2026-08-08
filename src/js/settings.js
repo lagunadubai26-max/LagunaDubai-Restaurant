@@ -8,7 +8,7 @@ async function load() {
   document.getElementById('autoPrintKitchen').checked = settings.autoPrintKitchen !== false;
   document.getElementById('printCopies').value = settings.printCopies || 1;
   document.getElementById('enablePrintAgent').checked = settings.enablePrintAgent !== false;
-  document.getElementById('printAgentUrl').value = settings.printAgentUrl || 'http://localhost:3000';
+  document.getElementById('printAgentUrl').value = settings.printAgentUrl || 'http://localhost:4321';
   document.getElementById('printAgentKey').value = settings.printAgentKey || '';
   if (settings.printAgentUrl) localStorage.setItem('laguna_rest_print_agent_url', settings.printAgentUrl);
   if (settings.printAgentKey) localStorage.setItem('laguna_rest_print_agent_key', settings.printAgentKey);
@@ -25,10 +25,10 @@ document.getElementById('saveSettings').onclick = async () => {
     autoPrintKitchen: document.getElementById('autoPrintKitchen').checked,
     printCopies: Number(document.getElementById('printCopies').value) || 1,
     enablePrintAgent: document.getElementById('enablePrintAgent').checked,
-    printAgentUrl: document.getElementById('printAgentUrl').value || 'http://localhost:3000',
+    printAgentUrl: document.getElementById('printAgentUrl').value || 'http://localhost:4321',
     printAgentKey: document.getElementById('printAgentKey').value || ''
   });
-  const agentUrl = document.getElementById('printAgentUrl').value || 'http://localhost:3000';
+  const agentUrl = document.getElementById('printAgentUrl').value || 'http://localhost:4321';
   localStorage.setItem('laguna_rest_print_agent_url', agentUrl);
   const agentKey = document.getElementById('printAgentKey').value || '';
   localStorage.setItem('laguna_rest_print_agent_key', agentKey);
