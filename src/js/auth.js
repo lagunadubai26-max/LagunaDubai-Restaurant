@@ -155,7 +155,7 @@
       var waterEl = document.getElementById('waterOverlay');
       if (waterEl) {
         waterEl.classList.add('active');
-        setTimeout(function() { window.location.href = 'index.html'; }, 1350);
+        setTimeout(function() { window.location.href = 'index.html'; }, 1850);
       } else {
         window.location.href = 'index.html';
       }
