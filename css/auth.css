@@ -64,3 +64,61 @@
 .auth-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(217,119,6,.4)}
 .auth-submit:active{transform:scale(.97)}
 .auth-error{color:var(--danger);font-size:13px;margin-top:12px;display:none}
+
+/* ── Water transition overlay ── */
+.water-overlay{
+  position:fixed;inset:0;z-index:999999;pointer-events:none;
+  visibility:hidden;opacity:0;transition:opacity .3s ease;
+}
+.water-overlay.active{visibility:visible;opacity:1}
+.water-fill{
+  position:absolute;left:0;right:0;bottom:0;height:0;
+  background:linear-gradient(180deg,#38bdf8 0%,#0284c7 55%,#075985 100%);
+  transition:height 1.25s cubic-bezier(.65,0,.35,1);
+  overflow:hidden;will-change:height;
+}
+.water-overlay.active .water-fill{height:100%}
+
+/* waves on the surface */
+.wave{
+  position:absolute;top:-30px;left:-50%;right:-50%;height:60px;
+  background-repeat:repeat-x;background-size:300px 60px;
+  pointer-events:none;
+}
+.wave-a{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 60'%3E%3Cpath d='M0 30 Q 37 8 75 30 T 150 30 T 225 30 T 300 30 L 300 60 L 0 60 Z' fill='%2338bdf8'/%3E%3C/svg%3E");
+  animation:waveDrift 5s linear infinite;
+}
+.wave-b{
+  top:-16px;height:44px;background-size:260px 44px;opacity:.65;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 44'%3E%3Cpath d='M0 22 Q 32 6 65 22 T 130 22 T 195 22 T 260 22 L 260 44 L 0 44 Z' fill='%237dd3fc'/%3E%3C/svg%3E");
+  animation:waveDrift 3.4s linear infinite reverse;
+}
+@keyframes waveDrift{from{background-position-x:0}to{background-position-x:300px}}
+
+/* bubbles */
+.bubble{
+  position:absolute;bottom:-60px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.85),rgba(255,255,255,.05) 65%);
+  animation:bubbleUp 4s linear infinite;
+}
+@keyframes bubbleUp{
+  0%{transform:translateY(0);opacity:0}
+  8%{opacity:.9}
+  100%{transform:translateY(-115vh);opacity:0}
+}
+
+/* message + ship */
+.water-label{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  color:#fff;text-align:center;font-family:'Cairo',sans-serif;
+  font-size:24px;font-weight:800;text-shadow:0 4px 18px rgba(7,89,133,.45);
+  opacity:0;transition:opacity .45s ease .55s;white-space:nowrap;
+}
+.water-overlay.active .water-label{opacity:1}
+.water-label i{
+  font-size:52px;display:block;margin-bottom:12px;
+  animation:shipRock 1.3s ease-in-out infinite;
+  filter:drop-shadow(0 6px 12px rgba(7,89,133,.4));
+}
+@keyframes shipRock{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7px) rotate(4deg)}}
