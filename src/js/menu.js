@@ -517,7 +517,7 @@ document.getElementById('confirmCheckout').onclick = async () => {
       customer = document.getElementById('checkoutSpecialName').value.trim();
       if (!customer) { resetCheckout(); return alert('يرجى إدخال اسم العميل الخاص'); }
       totalAmount = Number(document.getElementById('checkoutSpecialPrice').value);
-      if (!totalAmount || totalAmount <= 0) { resetCheckout(); return alert('يرجى إدخال السعر المخصص للعميل الخاص'); }
+      if (isNaN(totalAmount) || totalAmount < 0) { resetCheckout(); return alert('يرجى إدخال السعر المخصص للعميل الخاص'); }
     } else {
       customer = 'نقدي';
       totalAmount = window._checkoutTotal;
