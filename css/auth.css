@@ -66,47 +66,106 @@
 .auth-error{color:var(--danger);font-size:13px;margin-top:12px;display:none}
 
 /* ── Water transition overlay ── */
-.water-overlay{
-  position:fixed;inset:0;z-index:999999;pointer-events:none;
-  visibility:hidden;opacity:0;transition:opacity .3s ease;
-}
+.water-overlay{position:fixed;inset:0;z-index:999999;pointer-events:none;visibility:hidden;opacity:0;transition:opacity .3s ease}
 .water-overlay.active{visibility:visible;opacity:1}
 .water-fill{
   position:absolute;left:0;right:0;bottom:0;height:0;
-  background:linear-gradient(180deg,#38bdf8 0%,#0284c7 55%,#075985 100%);
-  transition:height 1.25s cubic-bezier(.65,0,.35,1);
-  overflow:hidden;will-change:height;
+  background:linear-gradient(180deg,#7dd3fc 0%,#38bdf8 14%,#0ea5e9 38%,#0284c7 62%,#0369a1 82%,#0c4a6e 100%);
+  background-size:100% 220%;animation:waterPulse 7s ease-in-out infinite alternate;
+  transition:height 1.7s cubic-bezier(.65,0,.35,1);
+  will-change:height;
 }
 .water-overlay.active .water-fill{height:100%}
+@keyframes waterPulse{from{background-position:50% 0%}to{background-position:50% 100%}}
 
-/* waves on the surface */
-.wave{
-  position:absolute;top:-30px;left:-50%;right:-50%;height:60px;
-  background-repeat:repeat-x;background-size:300px 60px;
-  pointer-events:none;
+/* god rays through the water */
+.water-rays{
+  position:absolute;inset:0;opacity:.22;pointer-events:none;
+  background:repeating-linear-gradient(112deg,rgba(255,255,255,0) 0px,rgba(255,255,255,.5) 70px,rgba(255,255,255,0) 150px);
+  background-size:300px 100%;
+  animation:raysMove 14s linear infinite;
 }
+@keyframes raysMove{from{background-position:0 0}to{background-position:300px 0}}
+
+/* light caustics drifting inside the water */
+.water-caustics{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 28% 38%,rgba(255,255,255,.18),transparent 42%),
+    radial-gradient(circle at 72% 55%,rgba(255,255,255,.13),transparent 38%),
+    radial-gradient(circle at 50% 82%,rgba(255,255,255,.1),transparent 46%),
+    radial-gradient(circle at 15% 70%,rgba(255,255,255,.1),transparent 30%),
+    radial-gradient(circle at 85% 25%,rgba(255,255,255,.12),transparent 34%);
+  animation:causticDrift 11s ease-in-out infinite alternate;
+}
+@keyframes causticDrift{
+  0%{background-position:0% 0%,0% 0%,0% 0%,0% 0%,0% 0%;transform:scale(1)}
+  50%{background-position:14% 6%,-10% 12%,8% -6%,-6% 10%,12% -4%;transform:scale(1.05)}
+  100%{background-position:-8% 10%,12% -6%,-12% 8%,10% -8%,-10% 6%;transform:scale(.97)}
+}
+
+/* three wave layers, different sizes/speeds */
+.wave{position:absolute;left:-60%;right:-60%;background-repeat:repeat-x;pointer-events:none}
 .wave-a{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 60'%3E%3Cpath d='M0 30 Q 37 8 75 30 T 150 30 T 225 30 T 300 30 L 300 60 L 0 60 Z' fill='%2338bdf8'/%3E%3C/svg%3E");
-  animation:waveDrift 5s linear infinite;
+  top:-46px;height:92px;background-size:420px 92px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 92'%3E%3Cpath d='M0 46 Q 35 16 70 34 Q 105 52 140 32 Q 175 12 210 32 Q 245 52 280 34 Q 315 16 350 32 Q 385 48 420 36 L 420 92 L 0 92 Z' fill='%2338bdf8'/%3E%3C/svg%3E");
+  animation:waveScrollA 7s linear infinite,waveBobA 5.5s ease-in-out infinite;
 }
 .wave-b{
-  top:-16px;height:44px;background-size:260px 44px;opacity:.65;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 44'%3E%3Cpath d='M0 22 Q 32 6 65 22 T 130 22 T 195 22 T 260 22 L 260 44 L 0 44 Z' fill='%237dd3fc'/%3E%3C/svg%3E");
-  animation:waveDrift 3.4s linear infinite reverse;
+  top:-32px;height:64px;background-size:340px 64px;opacity:.62;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 340 64'%3E%3Cpath d='M0 32 Q 28 12 57 26 Q 85 40 113 26 Q 142 12 170 26 Q 198 40 227 26 Q 255 12 283 26 Q 311 40 340 28 L 340 64 L 0 64 Z' fill='%237dd3fc'/%3E%3C/svg%3E");
+  animation:waveScrollB 4.6s linear infinite reverse,waveBobB 4.2s ease-in-out infinite reverse;
 }
-@keyframes waveDrift{from{background-position-x:0}to{background-position-x:300px}}
+.wave-c{
+  top:-22px;height:44px;background-size:280px 44px;opacity:.4;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 44'%3E%3Cpath d='M0 22 Q 23 6 47 18 Q 70 30 93 18 Q 117 6 140 18 Q 163 30 187 18 Q 210 6 233 18 Q 256 30 280 18 L 280 44 L 0 44 Z' fill='%23bae6fd'/%3E%3C/svg%3E");
+  animation:waveScrollC 3.2s linear infinite,waveBobC 3.6s ease-in-out infinite;
+}
+@keyframes waveScrollA{from{background-position-x:0}to{background-position-x:420px}}
+@keyframes waveScrollB{from{background-position-x:0}to{background-position-x:340px}}
+@keyframes waveScrollC{from{background-position-x:0}to{background-position-x:280px}}
+@keyframes waveBobA{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@keyframes waveBobB{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes waveBobC{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 
-/* bubbles */
+/* frothy foam line at the surface */
+.foam{
+  position:absolute;top:-4px;left:0;right:0;height:16px;pointer-events:none;opacity:.85;
+  background:
+    radial-gradient(circle at 8% 50%,rgba(255,255,255,.95) 0 2.5px,transparent 3px),
+    radial-gradient(circle at 18% 40%,rgba(255,255,255,.8) 0 1.8px,transparent 2.4px),
+    radial-gradient(circle at 30% 55%,rgba(255,255,255,.9) 0 2.2px,transparent 2.8px),
+    radial-gradient(circle at 42% 35%,rgba(255,255,255,.75) 0 1.6px,transparent 2.2px),
+    radial-gradient(circle at 55% 60%,rgba(255,255,255,.9) 0 2.6px,transparent 3.2px),
+    radial-gradient(circle at 68% 40%,rgba(255,255,255,.8) 0 1.8px,transparent 2.4px),
+    radial-gradient(circle at 80% 55%,rgba(255,255,255,.92) 0 2.4px,transparent 3px),
+    radial-gradient(circle at 92% 45%,rgba(255,255,255,.8) 0 1.8px,transparent 2.4px);
+  background-size:200px 16px;
+  animation:foamShift 6s linear infinite;
+}
+@keyframes foamShift{from{background-position-x:0}to{background-position-x:200px}}
+
+/* bubbles with wobble */
 .bubble{
-  position:absolute;bottom:-60px;border-radius:50%;
-  background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.85),rgba(255,255,255,.05) 65%);
+  position:absolute;border-radius:50%;
+  background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.9),rgba(255,255,255,.18) 45%,rgba(255,255,255,.02) 65%);
+  box-shadow:inset 0 0 6px rgba(255,255,255,.35);
   animation:bubbleUp 4s linear infinite;
 }
 @keyframes bubbleUp{
-  0%{transform:translateY(0);opacity:0}
-  8%{opacity:.9}
-  100%{transform:translateY(-115vh);opacity:0}
+  0%{transform:translate(0,0) scale(.7);opacity:0}
+  8%{opacity:.95}
+  45%{transform:translate(14px,-50vh) scale(1)}
+  100%{transform:translate(-12px,-118vh) scale(1.12);opacity:0}
 }
+
+/* surface glints */
+.sparkle{
+  position:absolute;width:5px;height:5px;border-radius:50%;background:#fff;
+  box-shadow:0 0 10px 3px rgba(255,255,255,.75);pointer-events:none;
+  animation:twinkle 2.4s ease-in-out infinite;
+}
+@keyframes twinkle{0%,100%{opacity:.08;transform:scale(.5)}50%{opacity:1;transform:scale(1.2)}}
 
 /* message + ship */
 .water-label{
