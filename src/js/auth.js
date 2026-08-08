@@ -151,7 +151,14 @@
       sessionStorage.setItem('laguna_rest_user', JSON.stringify({ id: user.id, username: user.username, name: user.name, role: user.role }));
       sessionStorage.setItem('laguna_rest_session_start', String(Date.now()));
       sessionStorage.setItem('laguna_rest_last_active', String(Date.now()));
-      window.location.href = 'index.html';
+      // ── Water transition to the system ──
+      var waterEl = document.getElementById('waterOverlay');
+      if (waterEl) {
+        waterEl.classList.add('active');
+        setTimeout(function() { window.location.href = 'index.html'; }, 1350);
+      } else {
+        window.location.href = 'index.html';
+      }
     } else {
       auditLogin(u, false, user ? 'كلمة مرور خاطئة' : 'مستخدم غير موجود');
       showError(errorEl, 'اسم المستخدم أو كلمة المرور غير صحيحة');
