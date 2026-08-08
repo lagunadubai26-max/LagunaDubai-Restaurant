@@ -1,5 +1,5 @@
 (function () {
-  if (!sessionStorage.getItem('laguna_user')) return;
+  if (!sessionStorage.getItem('laguna_rest_user')) return;
 
   let lastCount = 0;
 
@@ -99,7 +99,7 @@
   function init() {
     if (initDone) return;
     initDone = true;
-    const stored = localStorage.getItem('laguna_inv_count');
+    const stored = localStorage.getItem('laguna_rest_inv_count');
     lastCount = stored ? Number(stored) : 0;
 
     FB.onCollection('invoices', (items) => {
@@ -119,7 +119,7 @@
         }
       }
       lastCount = items.length;
-      localStorage.setItem('laguna_inv_count', lastCount);
+      localStorage.setItem('laguna_rest_inv_count', lastCount);
     });
   }
 

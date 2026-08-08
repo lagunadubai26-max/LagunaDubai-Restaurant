@@ -65,7 +65,7 @@
             <div class="role" id="sidebarRole">الدور</div>
             <div class="uid" id="sidebarUid" style="font-size:10px;color:#888;margin-top:2px;direction:ltr"></div>
         </div>
-        <a href="auth.html" onclick="sessionStorage.removeItem('laguna_user');sessionStorage.removeItem('laguna_token')" style="color:var(--muted);font-size:16px;text-decoration:none" title="تسجيل الخروج"><i class="fa-solid fa-right-from-bracket"></i></a>
+        <a href="auth.html" onclick="sessionStorage.removeItem('laguna_rest_user');sessionStorage.removeItem('laguna_rest_token')" style="color:var(--muted);font-size:16px;text-decoration:none" title="تسجيل الخروج"><i class="fa-solid fa-right-from-bracket"></i></a>
     </div>
 </aside>
 
@@ -112,8 +112,8 @@
             </div>
         </div>
         <script>
-          if (!sessionStorage.getItem('laguna_user')) window.location.href = 'auth.html';
-          const _user = JSON.parse(sessionStorage.getItem('laguna_user'));
+          if (!sessionStorage.getItem('laguna_rest_user')) window.location.href = 'auth.html';
+          const _user = JSON.parse(sessionStorage.getItem('laguna_rest_user'));
           if (_user) {
             document.getElementById('profileName').textContent = _user.name;
             document.getElementById('profileRole').textContent = _user.role === 'Administrator' ? 'مدير' : _user.role === 'Owner' ? 'م/ محمد الجوهري' : 'موظف';

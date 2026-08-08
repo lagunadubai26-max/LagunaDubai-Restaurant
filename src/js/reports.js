@@ -593,7 +593,7 @@ function showStartDayModal() {
 }
 
 document.getElementById('dcConfirmStartDay').onclick = async () => {
-  const user = JSON.parse(sessionStorage.getItem('laguna_user') || '{}');
+  const user = JSON.parse(sessionStorage.getItem('laguna_rest_user') || '{}');
   try {
     const shift = await DB.shifts.open(user.name || 'الكاشير');
     DB.audit.log('shift_open', { openDate: shift.openDate, openedBy: shift.openedBy });
@@ -614,7 +614,7 @@ window.addEventListener('click', e => { if (e.target === document.getElementById
 
 confirmDayClose.onclick = async () => {
   const btn = confirmDayClose;
-  const user = JSON.parse(sessionStorage.getItem('laguna_user') || '{}');
+  const user = JSON.parse(sessionStorage.getItem('laguna_rest_user') || '{}');
   const shift = await DB.shifts.getOpen();
   if (!shift) { alert('❌ لا يوجد شيفت مفتوح حاليًا'); return; }
   const todayISO = shift.openDate;

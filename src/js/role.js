@@ -1,6 +1,6 @@
 (function() {
   var user;
-  try { user = JSON.parse(sessionStorage.getItem('laguna_user')); } catch(e) { return; }
+  try { user = JSON.parse(sessionStorage.getItem('laguna_rest_user')); } catch(e) { return; }
   if (!user) return;
   var role = user.role || 'Admin';
 
@@ -57,8 +57,8 @@
       if (!snap.exists) {
         var allUsers = await DB.users.all();
         if (allUsers.length > 0) {
-          sessionStorage.removeItem('laguna_user');
-          sessionStorage.removeItem('laguna_token');
+          sessionStorage.removeItem('laguna_rest_user');
+          sessionStorage.removeItem('laguna_rest_token');
           window.location.replace('auth.html');
         }
       }

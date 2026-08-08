@@ -97,7 +97,7 @@ function showDashStartDayModal() {
 }
 
 document.getElementById('dashConfirmStartDay').onclick = async () => {
-  const user = JSON.parse(sessionStorage.getItem('laguna_user') || '{}');
+  const user = JSON.parse(sessionStorage.getItem('laguna_rest_user') || '{}');
   try {
     const shift = await DB.shifts.open(user.name || 'الكاشير');
     DB.audit.log('shift_open', { openDate: shift.openDate, openedBy: shift.openedBy });
@@ -166,7 +166,7 @@ async function showDashDayCloseModal(shift) {
 
 document.getElementById('dashConfirmDayClose').onclick = async () => {
   const btn = document.getElementById('dashConfirmDayClose');
-  const user = JSON.parse(sessionStorage.getItem('laguna_user') || '{}');
+  const user = JSON.parse(sessionStorage.getItem('laguna_rest_user') || '{}');
   const shift = await DB.shifts.getOpen();
   if (!shift) { alert('❌ لا يوجد شيفت مفتوح حاليًا'); return; }
   const openDate = btn.dataset.openDate || shift.openDate;

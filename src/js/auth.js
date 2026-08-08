@@ -1,7 +1,7 @@
 ;(async () => {
   const seedPromise = DB.seed().catch(function (e) { console.error('[auth] seed error:', e); });
 
-  const stored = sessionStorage.getItem('laguna_user');
+  const stored = sessionStorage.getItem('laguna_rest_user');
   if (stored) try { const u = JSON.parse(stored); if (u && u.id) { window.location.href = 'index.html'; return; } } catch {}
 
   const loginBtn = document.getElementById('loginBtn');
@@ -42,7 +42,7 @@
 
     // Layer 1: localStorage (survives tab close / incognito boundary)
     try {
-      var raw = localStorage.getItem('laguna_login_lockout');
+      var raw = localStorage.getItem('laguna_rest_login_lockout');
       if (raw) {
         var s = JSON.parse(raw);
         if (tamperCheck(s)) {
@@ -62,7 +62,7 @@
 
   function saveLoginState(s) {
     var sealed = sealState(s);
-    try { localStorage.setItem('laguna_login_lockout', JSON.stringify(sealed)); } catch (e) {}
+    try { localStorage.setItem('laguna_rest_login_lockout', JSON.stringify(sealed)); } catch (e) {}
     _memoryBlockedUntil = s.blockedUntil;
     _memoryAttempts = s.count;
   }
@@ -91,6 +91,7 @@
   }
 
   loginBtn.onclick = async () => {
+    try {
     var loginState = getLoginState();
     if (Date.now() < loginState.blockedUntil) {
       var wait = Math.ceil((loginState.blockedUntil - Date.now()) / 1000);
@@ -146,16 +147,21 @@
           }
         }).catch(function() {});
       }
-      sessionStorage.setItem('laguna_token', user.id);
-      sessionStorage.setItem('laguna_user', JSON.stringify({ id: user.id, username: user.username, name: user.name, role: user.role }));
-      sessionStorage.setItem('laguna_session_start', String(Date.now()));
-      sessionStorage.setItem('laguna_last_active', String(Date.now()));
+      sessionStorage.setItem('laguna_rest_token', user.id);
+      sessionStorage.setItem('laguna_rest_user', JSON.stringify({ id: user.id, username: user.username, name: user.name, role: user.role }));
+      sessionStorage.setItem('laguna_rest_session_start', String(Date.now()));
+      sessionStorage.setItem('laguna_rest_last_active', String(Date.now()));
       window.location.href = 'index.html';
     } else {
       auditLogin(u, false, user ? 'كلمة مرور خاطئة' : 'مستخدم غير موجود');
       showError(errorEl, 'اسم المستخدم أو كلمة المرور غير صحيحة');
     }
     setLoading(loginBtn, false);
+    } catch (err) {
+      console.error('[auth] login error:', err);
+      setLoading(loginBtn, false);
+      showError(errorEl, 'تعذر الاتصال بقاعدة البيانات. تحقق من الإنترنت وحاول مجددًا.');
+    }
   };
 
   username.addEventListener('keydown', function(e) { if (e.key === 'Enter') password.focus(); });

@@ -3,7 +3,7 @@ const table = document.querySelector('.returns-table');
 const searchInput = document.querySelector('.filter-box input');
 const statusSelect = document.querySelector('.filter-box select');
 const filterBtn = document.querySelector('.search-btn');
-const _retUser = (() => { try { return JSON.parse(sessionStorage.getItem('laguna_user')); } catch(e) { return {}; } })();
+const _retUser = (() => { try { return JSON.parse(sessionStorage.getItem('laguna_rest_user')); } catch(e) { return {}; } })();
 
 async function render() {
   returns = await DB.returns.all() || [];

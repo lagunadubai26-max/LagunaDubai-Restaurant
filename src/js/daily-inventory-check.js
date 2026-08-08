@@ -1,14 +1,14 @@
 ;(async function checkDailyInventory() {
   try {
     let user;
-    try { user = JSON.parse(sessionStorage.getItem('laguna_user')); } catch(e) { return; }
+    try { user = JSON.parse(sessionStorage.getItem('laguna_rest_user')); } catch(e) { return; }
     if (!user) return;
 
     var now = FB.clockNow();
     if (now.getHours() < 6) now.setDate(now.getDate() - 1);
     var invDate = localDateKey(now);
-    var doneKey = 'laguna_inv_done_' + invDate;
-    var remindKey = 'laguna_inv_remind_' + invDate;
+    var doneKey = 'laguna_rest_inv_done_' + invDate;
+    var remindKey = 'laguna_rest_inv_remind_' + invDate;
 
     if (localStorage.getItem(remindKey)) return;
 
