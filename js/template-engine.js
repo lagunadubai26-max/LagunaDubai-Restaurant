@@ -60,8 +60,8 @@ window.TEMPLATE = (() => {
     return '<div style="width:100%;max-width:320px;margin:0 auto;font-family:\'Cairo\',sans-serif;direction:rtl;background:#fff;padding:12px 10px;color:#222;">\n'
       + '  <div style="text-align:center;margin-bottom:6px;">\n'
       + '    {logo}\n'
-      + '    <div style="font-size:24px;font-weight:900;color:#1a1a2e;margin-top:4px;">لاجونا بوت</div>\n'
-      + '    <div style="font-size:10px;color:#888;margin-top:2px;">مطعم | Laguna Boat</div>\n'
+      + '    <div style="font-size:24px;font-weight:900;color:#1a1a2e;margin-top:4px;">لاجونا دبي</div>\n'
+      + '    <div style="font-size:10px;color:#888;margin-top:2px;">مطعم | LagunaDubai</div>\n'
       + '  </div>\n'
       + '  <div style="text-align:center;font-size:12px;color:#b8860b;margin:4px 0 2px;">❋ ❋ ❋ ❋ ❋</div>\n'
       + '  <div style="text-align:center;font-size:15px;font-weight:700;color:#1a1a2e;margin:2px 0;">فاتورة ضريبية</div>\n'
@@ -106,7 +106,7 @@ window.TEMPLATE = (() => {
     return '<div style="width:300px;margin:0 auto;font-family:\'Cairo\',sans-serif;direction:rtl;background:#fff;padding:12px 8px;color:#222;">\n'
       + '  <div style="text-align:center;margin-bottom:6px;">\n'
       + '    {logo}\n'
-      + '    <div style="font-size:20px;font-weight:900;color:#1a1a2e;">لاجونا بوت</div>\n'
+      + '    <div style="font-size:20px;font-weight:900;color:#1a1a2e;">لاجونا دبي</div>\n'
       + '    <div style="font-size:10px;color:#888;">مطعم</div>\n'
       + '  </div>\n'
       + '  <div style="border-top:3px solid #c0392b;margin:6px 0;"></div>\n'
@@ -179,8 +179,8 @@ window.TEMPLATE = (() => {
     const subtotal = total - (inv.serviceAmount || 0) - (inv.taxAmount || 0);
     const dateStr = inv.date ? new Date(inv.date).toLocaleString('ar-EG') : FB.clockNow().toLocaleString('ar-EG');
     const status = remaining > 0 ? 'معلق' : 'مدفوع';
-    const baseUrl = window.location.origin + '/LagunaBoat-Restaurant/';
-    const logoHtml = '<img src="' + baseUrl + 'images/logo.png" id="logoImg" style="height:65px;margin-bottom:4px;background:#222;padding:6px;border-radius:8px" alt="LagunaBoat">';
+    const baseUrl = window.location.origin + '/LagunaDubai-Restaurant/';
+    const logoHtml = '<img src="' + baseUrl + 'images/logo.png" id="logoImg" style="height:65px;margin-bottom:4px;background:#222;padding:6px;border-radius:8px" alt="LagunaDubai">';
 
     const commonVars = {
       logo: logoHtml,
@@ -266,11 +266,11 @@ window.TEMPLATE = (() => {
   }
 
   function defaultEscposCashier() {
-    return '{init}{center}{size=double}لاجونا بوت\n{size=normal}مطعم\n{bold}فاتورة ضريبية\n{bold=off}\n❋ ❋ ❋ ❋ ❋\n{left}\n#{id}\n{date}\n{customer}{table}\n---\n{items:name:qty:price}\n---\n{taxAmount}\n{serviceAmount}\n{bold}{total}\n{bold=off}{paid}\n{change}\n{remaining}\n{paymentMethod}\n---\nشكراً لزيارتكم\n{footer}\n{cut}';
+    return '{init}{center}{size=double}لاجونا دبي\n{size=normal}مطعم\n{bold}فاتورة ضريبية\n{bold=off}\n❋ ❋ ❋ ❋ ❋\n{left}\n#{id}\n{date}\n{customer}{table}\n---\n{items:name:qty:price}\n---\n{taxAmount}\n{serviceAmount}\n{bold}{total}\n{bold=off}{paid}\n{change}\n{remaining}\n{paymentMethod}\n---\nشكراً لزيارتكم\n{footer}\n{cut}';
   }
 
   function defaultEscposKitchen() {
-    return '{init}{center}{size=double}لاجونا بوت\n{size=normal}مطعم\n\n{bold}*** أمر مطبخ ***\n{bold=off}{left}\n{date}\n#{id}\n{table}\n---\n{items:name:qty}\n---\n{footer}\n{cut}';
+    return '{init}{center}{size=double}لاجونا دبي\n{size=normal}مطعم\n\n{bold}*** أمر مطبخ ***\n{bold=off}{left}\n{date}\n#{id}\n{table}\n---\n{items:name:qty}\n---\n{footer}\n{cut}';
   }
 
   function renderEscpos(inv, templateStr, type) {
@@ -296,7 +296,7 @@ window.TEMPLATE = (() => {
       taxAmount: inv.taxAmount > 0 ? 'ضريبة:     ' + Number(inv.taxAmount).toLocaleString() + ' ج.م' : '',
       subtotal: 'المجموع:   ' + (total - (inv.serviceAmount || 0) - (inv.taxAmount || 0)).toLocaleString() + ' ج.م',
       paymentMethod: (inv.paymentMethod || 'كاش') + '    ' + status,
-      footer: 'شكراً لزيارتكم\nLagunaBoat',
+      footer: 'شكراً لزيارتكم\nLagunaDubai',
       status: status
     };
 
