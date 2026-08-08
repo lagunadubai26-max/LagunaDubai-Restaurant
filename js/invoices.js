@@ -2,7 +2,7 @@ let invoices = [];
 const searchInput = document.querySelector('.filter-box input');
 const statusSelect = document.querySelector('.filter-box select');
 const tableBody = document.querySelector('#invTableBody');
-const _invUser = (() => { try { return JSON.parse(sessionStorage.getItem('laguna_user')); } catch(e) { return {}; } })();
+const _invUser = (() => { try { return JSON.parse(sessionStorage.getItem('laguna_rest_user')); } catch(e) { return {}; } })();
 
 async function render() {
   invoices = await DB.invoices.all() || [];
@@ -101,7 +101,7 @@ function attachActions() {
       if (inv.printed && !confirm('الفاتورة مطبوعة من قبل.\nهل تريد إعادة الطباعة؟')) return;
 
       let printed = false;
-      if (localStorage.getItem('laguna_print_agent_enabled') === 'true') {
+      if (localStorage.getItem('laguna_rest_print_agent_enabled') === 'true') {
         try {
           const result = await PRINTER.printViaAgent(inv, 'invoice');
           if (result && result.ok) printed = true;
@@ -139,7 +139,7 @@ function attachActions() {
       if (!inv) return;
 
       let printed = false;
-      if (localStorage.getItem('laguna_print_agent_enabled') === 'true') {
+      if (localStorage.getItem('laguna_rest_print_agent_enabled') === 'true') {
         try {
           const result = await PRINTER.printViaAgent(inv, 'kitchen');
           if (result && result.ok) printed = true;

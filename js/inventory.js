@@ -111,7 +111,7 @@ document.getElementById('postponeInvBtn').onclick = () => {
 
 async function checkDailyInventoryBanner() {
   const today = localDateKey(FB.clockNow());
-  const doneKey = 'laguna_inv_done_' + today;
+  const doneKey = 'laguna_rest_inv_done_' + today;
   if (localStorage.getItem(doneKey)) return;
 
   const counts = await DB.inventory_counts.all() || [];
@@ -155,8 +155,8 @@ async function checkDailyInventoryBanner() {
 
 function postponeInventory() {
   const today = localDateKey(FB.clockNow());
-  localStorage.setItem('laguna_inv_done_' + today, '1');
-  localStorage.setItem('laguna_inv_remind_' + today, '1');
+  localStorage.setItem('laguna_rest_inv_done_' + today, '1');
+  localStorage.setItem('laguna_rest_inv_remind_' + today, '1');
 
   const existing = document.getElementById('dailyInvBanner');
   if (existing) existing.remove();

@@ -482,7 +482,7 @@ document.getElementById('checkoutPaid').addEventListener('input', window.calcRem
 document.getElementById('confirmCheckout').onclick = async () => {
   if (checkoutProcessing) return;
   if (isCustomer && tableNum) {
-    const lastKey = 'laguna_last_order_t' + tableNum;
+    const lastKey = 'laguna_rest_last_order_t' + tableNum;
     const lastTime = Number(localStorage.getItem(lastKey)) || 0;
     if (Date.now() - lastTime < COOLDOWN_MS) {
       const remaining = Math.ceil((COOLDOWN_MS - (Date.now() - lastTime)) / 1000);
@@ -579,7 +579,7 @@ document.getElementById('confirmCheckout').onclick = async () => {
     DB.audit.log('invoice_created', { id: invId, total: totalAmount, method: method, customer: customer, table: table });
     document.getElementById('checkoutModal').classList.remove('show');
     if (inv && inv.id) {
-      const isAdmin = !!sessionStorage.getItem('laguna_user');
+      const isAdmin = !!sessionStorage.getItem('laguna_rest_user');
       const printSettings = (await DB.settings.get()) || {};
       const autoPrintReceipt = printSettings.autoPrintReceipt !== false;
       const autoPrintKitchen = printSettings.autoPrintKitchen !== false;
@@ -636,7 +636,7 @@ document.getElementById('confirmCheckout').onclick = async () => {
         const printCashier = async () => {
           let printed = false;
           try {
-            if (localStorage.getItem('laguna_print_agent_enabled') === 'true') {
+            if (localStorage.getItem('laguna_rest_print_agent_enabled') === 'true') {
               const agentResult = await PRINTER.printViaAgent(inv, 'invoice', { noAutoKitchen: true, openDrawer: paid >= totalAmount });
               if (agentResult && agentResult.ok) printed = true;
             }
@@ -657,7 +657,7 @@ document.getElementById('confirmCheckout').onclick = async () => {
         const printKitchen = async () => {
           let printed = false;
           try {
-            if (localStorage.getItem('laguna_print_agent_enabled') === 'true') {
+            if (localStorage.getItem('laguna_rest_print_agent_enabled') === 'true') {
               const agentResult = await PRINTER.printViaAgent(inv, 'kitchen');
               if (agentResult && agentResult.ok) printed = true;
             }
@@ -745,7 +745,7 @@ loadProducts();
   const status = document.getElementById('autoPrintStatus');
   if (!btn || !status) return;
   function update() {
-    const disabled = localStorage.getItem('laguna_auto_print_disabled') === 'true';
+    const disabled = localStorage.getItem('laguna_rest_auto_print_disabled') === 'true';
     btn.style.borderColor = disabled ? '#dc2626' : '#059669';
     btn.style.background = disabled ? '#fef2f2' : '#f0fdf4';
     status.textContent = disabled ? 'متوقفة' : 'مفعلة';
@@ -754,8 +754,8 @@ loadProducts();
   }
   update();
   btn.onclick = () => {
-    const cur = localStorage.getItem('laguna_auto_print_disabled') === 'true';
-    localStorage.setItem('laguna_auto_print_disabled', cur ? 'false' : 'true');
+    const cur = localStorage.getItem('laguna_rest_auto_print_disabled') === 'true';
+    localStorage.setItem('laguna_rest_auto_print_disabled', cur ? 'false' : 'true');
     update();
   };
 })();

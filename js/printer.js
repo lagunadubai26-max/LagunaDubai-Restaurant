@@ -93,7 +93,7 @@ window.PRINTER = (function() {
       host: host, port: port,
       ws: null,
       async connect() {
-        var proxyUrl = localStorage.getItem('laguna_printer_proxy') || 'ws://localhost:9090';
+        var proxyUrl = localStorage.getItem('laguna_rest_printer_proxy') || 'ws://localhost:9090';
         var self = this;
         this.ws = new WebSocket(proxyUrl);
         await new Promise(function(resolve, reject) {
@@ -208,11 +208,11 @@ window.PRINTER = (function() {
         host: p.driver.host, port: p.driver.port
       };
     });
-    localStorage.setItem('laguna_printers', JSON.stringify(data));
+    localStorage.setItem('laguna_rest_printers', JSON.stringify(data));
   }
 
   async function restorePrinters() {
-    var raw = localStorage.getItem('laguna_printers');
+    var raw = localStorage.getItem('laguna_rest_printers');
     var data;
     if (raw) { try { data = JSON.parse(raw); } catch (e) { data = []; } } else { data = []; }
     for (var cfg of data) {
@@ -223,7 +223,7 @@ window.PRINTER = (function() {
     }
     try {
       if (!navigator.usb) return;
-      if (localStorage.getItem('laguna_print_agent_enabled') === 'true') return;
+      if (localStorage.getItem('laguna_rest_print_agent_enabled') === 'true') return;
       var devices = await navigator.usb.getDevices();
       for (var dev of devices) {
         var already = printers.some(function(p) { return p.driver.device === dev; });
@@ -305,11 +305,11 @@ window.PRINTER = (function() {
   }
 
   async function printViaAgent(invoice, type, opts) {
-    var url = localStorage.getItem('laguna_print_agent_url');
+    var url = localStorage.getItem('laguna_rest_print_agent_url');
     if (!url) return { ok: false, skipped: true };
     try {
       var headers = { 'Content-Type': 'application/json' };
-      var apiKey = localStorage.getItem('laguna_print_agent_key');
+      var apiKey = localStorage.getItem('laguna_rest_print_agent_key');
       if (apiKey) headers['X-API-Key'] = apiKey;
       var payload = {};
       for (var k in invoice) payload[k] = invoice[k];

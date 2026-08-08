@@ -2,7 +2,7 @@ let expenses = [];
 let allExpenses = [];
 const expList = document.getElementById('expList');
 const expMonth = document.getElementById('expMonth');
-const _expUser = (() => { try { return JSON.parse(sessionStorage.getItem('laguna_user')); } catch(e) { return {}; } })();
+const _expUser = (() => { try { return JSON.parse(sessionStorage.getItem('laguna_rest_user')); } catch(e) { return {}; } })();
 
 const _expMonthNow = () => { const d = FB.clockNow(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); };
 

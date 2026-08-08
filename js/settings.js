@@ -10,9 +10,9 @@ async function load() {
   document.getElementById('enablePrintAgent').checked = settings.enablePrintAgent !== false;
   document.getElementById('printAgentUrl').value = settings.printAgentUrl || 'http://localhost:3000';
   document.getElementById('printAgentKey').value = settings.printAgentKey || '';
-  if (settings.printAgentUrl) localStorage.setItem('laguna_print_agent_url', settings.printAgentUrl);
-  if (settings.printAgentKey) localStorage.setItem('laguna_print_agent_key', settings.printAgentKey);
-  localStorage.setItem('laguna_print_agent_enabled', settings.enablePrintAgent !== false);
+  if (settings.printAgentUrl) localStorage.setItem('laguna_rest_print_agent_url', settings.printAgentUrl);
+  if (settings.printAgentKey) localStorage.setItem('laguna_rest_print_agent_key', settings.printAgentKey);
+  localStorage.setItem('laguna_rest_print_agent_enabled', settings.enablePrintAgent !== false);
 }
 
 document.getElementById('saveSettings').onclick = async () => {
@@ -29,10 +29,10 @@ document.getElementById('saveSettings').onclick = async () => {
     printAgentKey: document.getElementById('printAgentKey').value || ''
   });
   const agentUrl = document.getElementById('printAgentUrl').value || 'http://localhost:3000';
-  localStorage.setItem('laguna_print_agent_url', agentUrl);
+  localStorage.setItem('laguna_rest_print_agent_url', agentUrl);
   const agentKey = document.getElementById('printAgentKey').value || '';
-  localStorage.setItem('laguna_print_agent_key', agentKey);
-  localStorage.setItem('laguna_print_agent_enabled', document.getElementById('enablePrintAgent').checked);
+  localStorage.setItem('laguna_rest_print_agent_key', agentKey);
+  localStorage.setItem('laguna_rest_print_agent_enabled', document.getElementById('enablePrintAgent').checked);
   alert('تم حفظ الإعدادات بنجاح');
 };
 

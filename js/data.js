@@ -1,9 +1,9 @@
 const DB_MODE = 'firebase';
 
 function localGet(key, def) {
-  try { const d = localStorage.getItem('laguna_' + key); return d ? JSON.parse(d) : def; } catch { return def; }
+  try { const d = localStorage.getItem('laguna_rest_' + key); return d ? JSON.parse(d) : def; } catch { return def; }
 }
-function localSet(key, val) { localStorage.setItem('laguna_' + key, JSON.stringify(val)); }
+function localSet(key, val) { localStorage.setItem('laguna_rest_' + key, JSON.stringify(val)); }
 
 function localDateKey(d) {
   if (!d) return '';
@@ -206,7 +206,7 @@ const DB = {
     async log(type, detail) {
       try {
         var user;
-        try { user = JSON.parse(sessionStorage.getItem('laguna_user')); } catch(e) { user = null; }
+        try { user = JSON.parse(sessionStorage.getItem('laguna_rest_user')); } catch(e) { user = null; }
         await FB.addDoc('audit_logs', {
           type: type,
           detail: typeof detail === 'string' ? detail : JSON.stringify(detail),
