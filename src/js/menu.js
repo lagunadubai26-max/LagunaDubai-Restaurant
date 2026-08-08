@@ -481,6 +481,15 @@ document.getElementById('checkoutPaid').addEventListener('input', window.calcRem
 
 document.getElementById('confirmCheckout').onclick = async () => {
   if (checkoutProcessing) return;
+  try {
+    const openShift = await DB.shifts.getOpen();
+    if (!openShift) {
+      return alert('⚠️ لا يمكن إرسال الطلب قبل فتح الشيفت.\nمن فضلك افتح الشيفت أولًا من لوحة التحكم.');
+    }
+  } catch(e) {
+    console.warn('[checkout] shift check failed:', e);
+    return alert('⚠️ تعذر التحقق من الشيفت. تأكد من الاتصال وحاول مرة أخرى.');
+  }
   if (isCustomer && tableNum) {
     const lastKey = 'laguna_rest_last_order_t' + tableNum;
     const lastTime = Number(localStorage.getItem(lastKey)) || 0;
