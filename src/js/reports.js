@@ -33,7 +33,8 @@ function filterByDate(items, range) {
 function calcStats(invoices, expenses, returns) {
   const soldInvoices = invoices.filter(i => i.status !== 'returned' && i.status !== 'مرتجعة');
   const totalSales = soldInvoices.reduce((s, i) => s + Number(i.total || 0), 0);
-  const totalPending = 0;
+  const totalPending = soldInvoices.filter(i => i.status !== 'paid' && i.status !== 'مدفوعة')
+    .reduce((s, i) => s + Math.max(0, Number(i.total || 0) - Number(i.paid || 0)), 0);
   const totalReturns = returns.filter(r => r.status === 'success').reduce((s, r) => s + Number(r.amount || 0), 0);
   const totalExpenses = expenses.reduce((s, e) => s + Number(e.amount || 0), 0);
   const collectedCash = soldInvoices.filter(i => i.paymentMethod === 'Cash' || i.paymentMethod === 'كاش').reduce((s, i) => s + Number(i.paid != null && Number(i.paid) > 0 ? i.paid : (i.total || 0)), 0);
@@ -157,7 +158,7 @@ async function render() {
     stats.netProfit = stats.totalSales - stats.totalReturns - stats.totalExpenses;
     stats.totalCard = closedCard;
 
-    const chartInvoices = invoices.concat(chartDays);
+    const chartInvoices = openDayInvoices.concat(chartDays);
     const prevStats = calcStats(prevInvoices, [], []);
 
     document.getElementById('reportSales').textContent = fmtMoney(stats.totalSales);
