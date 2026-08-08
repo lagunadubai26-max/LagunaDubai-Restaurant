@@ -173,6 +173,36 @@
                     <strong id="walletPercent">0%</strong>
                 </div>
 
+                <div class="donut-wrap"><canvas id="paymentDonut"></canvas></div>
+
+            </div>
+
+        </section>
+
+        <!-- Extra panels -->
+        <section class="dash-row">
+
+            <div class="panel">
+                <div class="panel-head">
+                    <h2><i class="fa-solid fa-clock-rotate-left"></i> آخر الفواتير</h2>
+                    <a href="invoices.html" class="panel-link">عرض الكل <i class="fa-solid fa-arrow-left-long"></i></a>
+                </div>
+                <div id="recentInvoices" class="recent-list">
+                    <div class="skeleton" style="height:52px;margin-bottom:8px"></div>
+                    <div class="skeleton" style="height:52px;margin-bottom:8px"></div>
+                    <div class="skeleton" style="height:52px"></div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <h2><i class="fa-solid fa-ranking-star"></i> الأصناف الأكثر مبيعاً</h2>
+                </div>
+                <div id="topProducts" class="top-list">
+                    <div class="skeleton" style="height:38px;margin-bottom:14px"></div>
+                    <div class="skeleton" style="height:38px;margin-bottom:14px"></div>
+                    <div class="skeleton" style="height:38px"></div>
+                </div>
             </div>
 
         </section>
@@ -236,7 +266,7 @@
 <script src="js/sanitize.js"></script>
 <script src="js/data.js?v=8"></script>
         <script src="js/notifications.js?v=3"></script>
-        <script src="js/dashboard.js?v=7"></script>
+        <script src="js/dashboard.js?v=8"></script>
 <script src="js/daily-inventory-check.js?v=2"></script>
 <script src="js/role.js?v=4"></script>
 

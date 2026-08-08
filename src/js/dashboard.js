@@ -6,12 +6,12 @@ async function updateDashboard() {
   const customers = (await DB.customers.all() || []).length;
   const totalOrders = invoices.reduce((s, i) => s + (i.items ? i.items.reduce((a, b) => a + Number(b.qty || 0), 0) : 0), 0);
 
-  document.getElementById('totalSales').textContent = totalSales.toLocaleString() + ' جنيه';
+  animateCount(document.getElementById('totalSales'), totalSales, ' جنيه');
   const salesStatus = document.getElementById('salesStatus');
   if (salesStatus) salesStatus.textContent = (pendingTotal > 0 ? pendingTotal.toLocaleString() + ' ج.م معلقة | ' : '') + 'مدفوعة';
-  document.getElementById('totalInvoices').textContent = invoices.length;
-  document.getElementById('totalCustomers').textContent = customers || '0';
-  document.getElementById('totalOrders').textContent = totalOrders || '0';
+  animateCount(document.getElementById('totalInvoices'), invoices.length, '');
+  animateCount(document.getElementById('totalCustomers'), customers || 0, '');
+  animateCount(document.getElementById('totalOrders'), totalOrders || 0, '');
 
   // Day close button (Owner role removed — always visible)
   const dayCloseBtn = document.getElementById('dashDayCloseBtn');
@@ -26,7 +26,91 @@ async function updateDashboard() {
   document.getElementById('walletPercent').textContent = Math.round(methods.Wallet / total * 100) + '%';
 
   updateChart(soldInvoices);
+  renderRecentInvoices(soldInvoices);
+  renderTopProducts(soldInvoices);
+  drawPaymentDonut(invoices);
   checkDashDayClose();
+}
+
+// ── Animated counters ──
+function animateCount(el, target, suffix) {
+  if (!el) return;
+  suffix = suffix || '';
+  var from = el._counted || 0;
+  var start = performance.now();
+  var dur = 800;
+  function tick(now) {
+    var p = Math.min((now - start) / dur, 1);
+    var eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(from + (target - from) * eased).toLocaleString() + suffix;
+    if (p < 1) requestAnimationFrame(tick); else el._counted = target;
+  }
+  requestAnimationFrame(tick);
+}
+
+// ── Recent invoices panel ──
+function renderRecentInvoices(invoices) {
+  const box = document.getElementById('recentInvoices');
+  if (!box) return;
+  const list = invoices.slice().sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0)).slice(0, 6);
+  if (!list.length) {
+    box.innerHTML = '<div class="empty-state" style="padding:26px 10px"><i class="fa-solid fa-receipt"></i><h3>لا توجد فواتير بعد</h3><p>ستظهر أحدث الفواتير هنا</p></div>';
+    return;
+  }
+  const methodMap = { Cash: 'كاش', Visa: 'فيزا', Wallet: 'محفظة', Card: 'شبكة' };
+  box.innerHTML = list.map(inv => {
+    const d = inv.date ? new Date(inv.date) : null;
+    const day = d ? d.toLocaleDateString('ar-EG', { day: 'numeric', month: 'short' }) : '—';
+    const time = d ? d.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) : '—';
+    const method = methodMap[inv.paymentMethod] || inv.paymentMethod || '—';
+    const ok = inv.status === 'paid' || inv.status === 'مدفوعة';
+    return '<div class="recent-item">' +
+      '<div class="recent-icon ' + (ok ? 'ok' : 'pending') + '"><i class="fa-solid fa-receipt"></i></div>' +
+      '<div class="recent-info"><div class="recent-name">فاتورة #' + escapeHtml(String(inv.id || '—').slice(-6)) + '</div>' +
+      '<div class="recent-meta">' + day + ' ' + time + ' · ' + escapeHtml(method) + '</div></div>' +
+      '<div class="recent-total">' + Number(inv.total || 0).toLocaleString() + ' ج.م</div></div>';
+  }).join('');
+}
+
+// ── Top products panel ──
+function renderTopProducts(invoices) {
+  const box = document.getElementById('topProducts');
+  if (!box) return;
+  const agg = {};
+  invoices.forEach(inv => (inv.items || []).forEach(it => {
+    const key = it.name || it.productName || 'منتج';
+    agg[key] = (agg[key] || 0) + Number(it.qty || 0);
+  }));
+  const top = Object.entries(agg).sort((a, b) => b[1] - a[1]).slice(0, 6);
+  if (!top.length) {
+    box.innerHTML = '<div class="empty-state" style="padding:26px 10px"><i class="fa-solid fa-utensils"></i><h3>لا توجد مبيعات بعد</h3><p>ستظهر الأصناف الأكثر مبيعاً هنا</p></div>';
+    return;
+  }
+  const max = top[0][1] || 1;
+  const medals = ['#f59e0b', '#94a3b8', '#d97706'];
+  box.innerHTML = top.map(([name, qty], idx) =>
+    '<div class="top-item"><div class="top-row">' +
+    '<span class="top-name"><i class="fa-solid fa-medal" style="color:' + (medals[idx] || '#d6d3d1') + '"></i> ' + escapeHtml(name) + '</span>' +
+    '<span class="top-qty">' + qty + '</span></div>' +
+    '<div class="top-bar"><div class="top-fill" style="width:' + Math.round(qty / max * 100) + '%"></div></div></div>'
+  ).join('');
+}
+
+// ── Payment methods donut ──
+function drawPaymentDonut(invoices) {
+  const canvas = document.getElementById('paymentDonut');
+  if (!canvas || typeof Chart === 'undefined') return;
+  const methods = { Cash: 0, Visa: 0, Wallet: 0 };
+  invoices.forEach(i => { const m = i.paymentMethod || 'Cash'; if (methods[m] !== undefined) methods[m]++; });
+  if (window.paymentDonut instanceof Chart) window.paymentDonut.destroy();
+  window.paymentDonut = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: ['كاش', 'فيزا', 'محفظة'],
+      datasets: [{ data: [methods.Cash, methods.Visa, methods.Wallet], backgroundColor: ['#059669', '#2563eb', '#7c3aed'], borderWidth: 0, hoverOffset: 6 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, font: { family: 'Cairo', size: 12 } } } } }
+  });
 }
 
 function updateChart(invoices) {
@@ -202,6 +286,7 @@ document.getElementById('dashCancelDayClose').onclick = closeDashDayClose;
 window.addEventListener('click', e => { if (e.target === document.getElementById('dashDayCloseModal')) closeDashDayClose(); });
 
 updateDashboard();
+setInterval(updateDashboard, 60000);
 
 (async function autoStartDay() {
   try {

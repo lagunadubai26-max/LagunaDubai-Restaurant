@@ -85,7 +85,8 @@ ul{list-style:none}
   content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);
   width:3px;height:24px;background:var(--accent);border-radius:0 3px 3px 0;
 }
-.sidebar nav i{width:20px;text-align:center;font-size:16px}
+.sidebar nav i{width:20px;text-align:center;font-size:16px;transition:transform var(--transition)}
+.sidebar nav a:hover i{transform:translateX(-3px)}
 
 /* profile section in sidebar */
 .profile-section{
@@ -279,8 +280,9 @@ label{display:block;font-size:14px;font-weight:600;color:var(--primary);margin-b
 
 /* topbar */
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;flex-wrap:wrap;gap:15px}
-.topbar h1{font-family:'Playfair Display','Cairo',serif;font-size:32px;color:var(--primary);font-weight:700}
-.topbar p{color:var(--muted);margin-top:4px;font-size:15px}
+.topbar h1{font-family:'Playfair Display','Cairo',serif;font-size:32px;color:var(--primary);font-weight:700;position:relative;display:inline-block;padding-bottom:8px}
+.topbar h1::after{content:'';position:absolute;right:0;bottom:0;width:46px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent-light))}
+.topbar p{color:var(--muted);margin-top:8px;font-size:15px}
 
 /* search & filter */
 .search-box{
@@ -369,3 +371,8 @@ label{display:block;font-size:14px;font-weight:600;color:var(--primary);margin-b
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:#d4d4d4;border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:#a8a29e}
+
+/* respect reduced motion */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
