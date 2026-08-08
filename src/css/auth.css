@@ -35,7 +35,9 @@
 .auth-card h1{
   font-family:'Playfair Display','Cairo',serif;
   font-size:28px;color:var(--primary);margin-bottom:4px;
+  display:flex;justify-content:center;align-items:baseline;gap:10px;
 }
+.auth-card h1 .auth-dubai{color:var(--accent)}
 .auth-card > p{color:var(--muted);font-size:14px;margin-bottom:32px}
 .auth-form{text-align:right;animation:fadeIn .3s ease}
 .auth-form .input-group{margin-bottom:18px;position:relative}
@@ -181,3 +183,28 @@
   filter:drop-shadow(0 6px 12px rgba(7,89,133,.4));
 }
 @keyframes shipRock{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7px) rotate(4deg)}}
+
+/* ── Mobile (≤768) ── */
+@media (max-width: 768px) {
+  .auth-body { padding: 14px; }
+  .auth-card { padding: 34px 22px 26px; border-radius: 20px; }
+  .auth-card h1 { font-size: 24px; gap: 8px; }
+  .auth-logo-circle { width: 80px; height: 80px; margin-bottom: 16px; }
+  .auth-logo-circle img { width: 46px !important; height: 46px !important; }
+  .auth-body::before { width: 260px; height: 260px; top: -90px; right: -90px; }
+  .auth-body::after { width: 240px; height: 240px; bottom: -80px; left: -80px; }
+  .water-label { font-size: 17px; white-space: normal; padding: 0 24px; }
+  .water-label i { font-size: 38px; }
+  .auth-form .input-group input { height: 46px; font-size: 16px; }
+  .auth-submit { height: 48px; }
+}
+
+/* ── Small mobile (≤400) ── */
+@media (max-width: 400px) {
+  .auth-card { padding: 26px 16px 20px; }
+  .auth-card h1 { font-size: 20px; gap: 6px; }
+  .auth-logo-circle { width: 68px; height: 68px; }
+  .auth-logo-circle img { width: 40px !important; height: 40px !important; }
+  .water-label { font-size: 15px; }
+  .water-label i { font-size: 32px; }
+}
