@@ -1,21 +1,31 @@
 const FB = (() => {
   let db;
   let uid = null;
+  let _initPromise = null;
 
   async function init() {
     if (db) return;
-    const app = firebase.initializeApp(FIREBASE_CONFIG);
-    db = firebase.firestore(app);
-    db.settings({ merge: true });
+    if (_initPromise) return _initPromise;
+    _initPromise = (async () => {
+      const app = firebase.initializeApp(FIREBASE_CONFIG);
+      db = firebase.firestore(app);
+      db.settings({ merge: true });
+      try {
+        const cred = await firebase.auth(app).signInAnonymously();
+        uid = cred.user.uid;
+      } catch (e) {
+        console.warn('[firebase] anonymous auth failed:', e.message);
+      }
+    })();
     try {
-      const cred = await firebase.auth(app).signInAnonymously();
-      uid = cred.user.uid;
+      await _initPromise;
     } catch (e) {
-      console.warn('[firebase] anonymous auth failed:', e.message);
+      _initPromise = null;
+      throw e;
     }
   }
 
-  async function ensure() { if (!db) await init(); startClockSync(); }
+  async function ensure() { await init(); startClockSync(); }
 
   function docId() { 
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
