@@ -1,8 +1,22 @@
 let invoices = [];
+let rangeStart = null;
+let shiftDateLabel = null;
 const searchInput = document.querySelector('.filter-box input');
 const statusSelect = document.querySelector('.filter-box select');
 const tableBody = document.querySelector('#invTableBody');
 const _invUser = (() => { try { return JSON.parse(sessionStorage.getItem('laguna_rest_user')); } catch(e) { return {}; } })();
+
+async function resolveShiftRange() {
+  rangeStart = null;
+  shiftDateLabel = null;
+  try {
+    const openShift = await DB.shifts.getOpen();
+    if (openShift && openShift.openDate) {
+      rangeStart = new Date(openShift.openedAt);
+      shiftDateLabel = new Date(openShift.openDate + 'T12:00:00Z').toLocaleDateString('ar-EG', { timeZone: 'Africa/Cairo' });
+    }
+  } catch(e) { console.warn('[invoices] shift check failed:', e); }
+}
 
 async function render() {
   invoices = await DB.invoices.all() || [];
@@ -12,15 +26,7 @@ async function render() {
   const val = searchInput ? searchInput.value.toLowerCase() : '';
   const filterStatus = statusSelect ? statusSelect.value : 'كل الحالات';
 
-  let rangeStart = null;
-  let shiftDateLabel = null;
-  try {
-    const openShift = await DB.shifts.getOpen();
-    if (openShift && openShift.openDate) {
-      rangeStart = new Date(openShift.openedAt);
-      shiftDateLabel = new Date(openShift.openDate + 'T12:00:00Z').toLocaleDateString('ar-EG', { timeZone: 'Africa/Cairo' });
-    }
-  } catch(e) { console.warn('[invoices] shift check failed:', e); }
+  await resolveShiftRange();
   const todayKey = localDateKey(FB.clockNow());
   const now = new Date(Math.max(FB.clockNow().getTime(), (invoices || []).reduce((m, i) => i.date ? Math.max(m, new Date(i.date).getTime()) : m, 0)));
 
