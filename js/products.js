@@ -86,9 +86,10 @@ async function render() {
   prodList.innerHTML = '';
   const val = searchInput.value.toLowerCase();
   const cat = catFilter.value;
-  const filtered = products.filter(p => p.name.toLowerCase().includes(val) && (cat === 'all' || p.category === cat));
+  const filtered = products.filter(p => (p.name || '').toLowerCase().includes(val) && (cat === 'all' || p.category === cat));
 
   filtered.forEach(p => {
+    if (!p.name) return;
     const stCls = p.available ? 'active' : 'stopped';
     const stTxt = p.available ? 'متاح' : 'غير متاح';
     const row = document.createElement('div');
@@ -135,6 +136,7 @@ function renderFiltered(available) {
   prodList.innerHTML = '';
   const filtered = products.filter(p => p.available === available);
   filtered.forEach(p => {
+    if (!p.name) return;
     const stCls = p.available ? 'active' : 'stopped';
     const stTxt = p.available ? 'متاح' : 'غير متاح';
     const row = document.createElement('div');
